@@ -30,7 +30,7 @@ class MyGraph:
         print(rand_weights)
         print(len(rand_edges))
         print(len(rand_weights))
-        self.__g.simplify(multiple=True, loops=False, combine_edges=None)
+        self.__g.simplify(multiple=True, loops=True, combine_edges=None)
         self.__g.es['weight'] = rand_weights
         self.__g.es['label'] = rand_weights
         self.__g.es["curved"] = False
@@ -80,10 +80,29 @@ class MyGraph:
         print("Is the graph directed:", self.__g.is_directed())
         print("Maximum degree in the graph:", self.__g.maxdegree())
         print("Adjacency matrix:\n", self.__g.get_adjacency())
-        print("The shortest paths from vertex 0 to vertex 4:", self.__g.get_shortest_paths(0, to=4))
+        print("weights:", self.__g.es['weight'])
+
+    def get_shortest_path(self, start_node, destination_node):
+        return self.__g.get_shortest_paths(
+            start_node,
+            to=destination_node
+        )
+
+    def get_shortest_path_length(self, path):
+        if len(path[0]) > 0:
+            # Add up the weights across all edges on the shortest path
+            distance = 0
+            for e in path[0]:
+                distance += self.__g.es[e]["weight"]
+            return distance
+        else:
+            print("End node could not be reached!")
+            return 0
 
 
 graph = MyGraph()
 graph.generate_random_graph(5, 10)
 graph.print_graph(1)
 graph.print_info()
+print(graph.get_shortest_path(0,4))
+print(graph.get_edges())
