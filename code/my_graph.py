@@ -1,15 +1,17 @@
 from igraph import *
 import random
-import numpy as np
 
 
-# Abstract representation of a graph.
+# A class to to encapsulate a graph.
+# It includes all necessary methods for a graph
 class MyGraph:
 
     def __init__(self):
         self.__g = None
+        self.__initial_vertex = 0
 
-    def generate_random_graph(self, number_of_vertex, number_of_edges):
+    def generate_random_graph(self, number_of_vertex, number_of_edges, initial_vertex):
+        self.__initial_vertex = initial_vertex
         self.__g = Graph()
         self.__g.add_vertices(number_of_vertex)
 
@@ -55,6 +57,9 @@ class MyGraph:
     def get_edges(self):
         return self.__g.get_edgelist()
 
+    def get_initial_vertex(self):
+        return self.__initial_vertex
+
     def get_graph(self):
         return self.__g
 
@@ -81,9 +86,9 @@ class MyGraph:
             # Add up the weights across all edges on the shortest path
             distance = 0
             n = len(path[0])
-            for i in range(n):
+            for i in range(0, n):
                 if i + 1 != n:
-                    mytuple = (path[0][i],path[0][i+1])
+                    mytuple = (path[0][i], path[0][i + 1])
                     distance += self.get_weight_by_index(self.get_edges().index(mytuple))
             return distance
         else:
@@ -93,9 +98,10 @@ class MyGraph:
     def get_weight_by_index(self, index):
         return (self.__g.es["weight"])[index]
 
+
 """
 graph = MyGraph()
-graph.generate_random_graph(5, 10)
+graph.generate_random_graph(5, 10,0)
 graph.print_graph(2)
 path=graph.get_shortest_path(0,4)
 print(path[0])
