@@ -1,5 +1,5 @@
-# Python program for implementation of Bubble Sort
 
+"""
 def bubbleSort(arr):
     n = len(arr)
 
@@ -24,3 +24,8 @@ bubbleSort(arr)
 print("Sorted array is:")
 for i in range(len(arr)):
     print("%d" % arr[i], end=" ")
+
+"""
+arr = [64, 34, 40,25, 12, 22, 101, 0, 11, 90]
+arr2 = [34,25,22,90,1]
+print()

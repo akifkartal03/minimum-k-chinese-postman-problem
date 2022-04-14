@@ -7,44 +7,217 @@ class MyAlgorithm:
 
     def __init__(self, my_graph):
         self.__my_graph = my_graph
-        self.__sorted_edges = None
+        self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
 
     def my_algorithm(self, s, k):
-        print("algo")
+        print("algo starts")
+        self.sort_edges_descending()
+        print("sorted edges:")
+        print(self.__sorted_edges)
+        self.create_closed_walk()
+        print("walks:")
+        print(self.__closed_walks)
 
     def sort_edges_descending(self):
         weights = self.__my_graph.get_weights()
-        self.__sorted_edges = self.__my_graph.get_edges()
-        print(weights)
-        print(self.__sorted_edges)
+        edges = self.__my_graph.get_edges()
+        print("edges")
+        print(edges)
         n = len(weights)
         for i in range(n):
             for j in range(0, n - i - 1):
                 if weights[j] < weights[j + 1]:
-                    self.__sorted_edges[j], self.__sorted_edges[j + 1] = \
-                        self.__sorted_edges[j + 1], self.__sorted_edges[j]
+                    edges[j], edges[j + 1] = edges[j + 1], edges[j]
                     weights[j], weights[j + 1] = weights[j + 1], weights[j]
+        self.create_edge_dict(edges, weights)
+
+    def create_edge_dict(self, edges, weights):
+        n = len(weights)
+        for i in range(n):
+            edge = edges[i]
+            my_dict = {
+                'start_node': edge[0],
+                'end_node': edge[1],
+                'length': weights[i]
+            }
+            self.__sorted_edges.append(my_dict)
+
+    def get_edge_length(self, edge):
+        for e in self.__sorted_edges:
+            if (e['start_node'] == edge[0] and e['end_node'] == edge[1]) or \
+                    (e['start_node'] == edge[1] and e['end_node'] == edge[0]):
+                return e['length']
+        return 0
+
+    def is_in_edge_list(self, edge):
+        for e in self.__sorted_edges:
+            if (e['start_node'] == edge[0] and e['end_node'] == edge[1]) or \
+                    (e['start_node'] == edge[1] and e['end_node'] == edge[0]):
+                return True
+        return False
 
     def create_closed_walk(self):
-        added_edges = []
-        temp_added = []
+
         for e in self.__sorted_edges:
-            if list(e) not in added_edges:
-                path1 = self.__my_graph.get_shortest_path(self.__my_graph.get_initial_vertex(), e[0])[0]
-                path2 = self.__my_graph.get_shortest_path(e[1], self.__my_graph.get_initial_vertex())[0]
-                path3 = list(e)
-                walk = []
-                if len(path1) > 1 and len(path2) > 1:
-                    if path1[-1] == path2[0]:
-                        temp = path1
-                        temp.append(path2[1:])
-                        if not self.check_include(temp, path3):
-                            print("test")
-                    print(path1)
-                    print(path2)
-                    print(path3)
+
+            # e = {vi, vj}
+            path3 = [e['start_node'], e['end_node']]
+            walk = []
+            # if e is not already covered by an existing tour.
+            if not self.check_added(path3):
+
+                # SP(v1, vi)
+                path1 = self.__my_graph.get_shortest_path(self.__my_graph.get_initial_vertex(), path3[0])[0]
+                # SP(vj, v1)
+                path2 = self.__my_graph.get_shortest_path(path3[1], self.__my_graph.get_initial_vertex())[0]
+
+                print(path1)
+                print(path2)
+                print(path3)
+
+                # eğer path1 ile path2 merge olursa
+                if self.try_to_merge(path1, path2, walk):
+                    # path3 ile birleştirmeye çalış
+                    self.add_edge_to_walk(walk, path3)
+                # eğer path1 ile path3 merge olursa
+                elif self.try_to_merge(path1, path3, walk):
+                    # path2 ile birleştirmeye çalış
+                    self.add_edge_to_walk(walk, path2)
+                # eğer path2 ile path3 merge olursa
+                elif self.try_to_merge(path2, path3, walk):
+                    # path1 ile birleştirmeye çalış
+                    self.add_edge_to_walk(walk, path1)
+                else:
+                    walk.extend(self.get_maximum(path1, path2, path3))
+                if len(walk) > 1:
+                    self.__closed_walks.append({'walk': walk, 'length': self.get_walk_length(walk)})
+
+    def get_maximum(self, a, b, c):
+
+        if (len(a) >= len(b)) and (len(a) >= len(c)):
+            largest = a
+
+        elif (len(b) >= len(a)) and (len(b) >= len(c)):
+            largest = b
+        else:
+            largest = c
+
+        return largest
+
+    def check_added(self, edge):
+        for e in self.__closed_walks:
+            walk = e['walk']
+            n = len(walk)
+            for i in range(0, n):
+                if i + 1 != n:
+                    temp = [walk[i], walk[i + 1]]
+                    if temp == edge:
+                        return True
+            return False
+
+    def try_to_merge(self, path1, path2, walk):
+
+        if len(path1) > 1 and len(path2) > 1 and \
+                (not self.check_include(path1, path2)):
+            if path1[-1] == path2[0]:
+                if len(walk) >= len(path1):
+                    if not all(elem in walk for elem in path1):
+                        walk.extend(path1)
+                else:
+                    walk.extend(path1)
+
+                if len(walk) >= len(path2[1:]):
+                    if not all(elem in walk for elem in path2[1:]):
+                        walk.extend(path2[1:])
+                else:
+                    walk.extend(path2[1:])
+
+                return True
+
+            elif self.is_in_edge_list([path1[0], path2[-1]]):
+                if len(walk) >= len(path2):
+                    if not all(elem in walk for elem in path2):
+                        walk.extend(path2)
+                else:
+                    walk.extend(path2)
+
+                if len(walk) >= len(path1):
+                    if not all(elem in walk for elem in path1):
+                        walk.extend(path1)
+                else:
+                    walk.extend(path1)
+
+                return True
+
+            elif self.is_in_edge_list([path1[-1], path2[0]]):
+                if len(walk) >= len(path1):
+                    if not all(elem in walk for elem in path1):
+                        walk.extend(path1)
+                else:
+                    walk.extend(path1)
+
+                if len(walk) >= len(path2):
+                    if not all(elem in walk for elem in path2):
+                        walk.extend(path2)
+                else:
+                    walk.extend(path2)
+
+                return True
+            elif path1[0] == path2[-1]:
+                if len(walk) >= len(path2):
+                    if not all(elem in walk for elem in path2):
+                        walk.extend(path2)
+                else:
+                    walk.extend(path2)
+
+                if len(walk) >= len(path1[1:]):
+                    if not all(elem in walk for elem in path1[1:]):
+                        walk.extend(path1[1:])
+                else:
+                    walk.extend(path1[1:])
+                return True
+
+            else:
+                return False
+        else:
+            return False
+
+    def add_edge_to_walk(self, walk, path3):
+        # walk eğer path'ü içermiyorsa path3'u ekle
+        if len(walk) > 1 and len(path3) > 1 and \
+                (not self.check_include(walk, path3)):
+            # eğer path1'in son node'u ile path3'un ilk node'u eşitse
+            if walk[-1] == path3[0]:
+                if len(walk) >= len(path3[1:]):
+                    if not all(elem in walk for elem in path3[1:]):
+                        walk.extend(path3[1:])
+                else:
+                    walk.extend(path3[1:])
+
+
+            elif self.is_in_edge_list([walk[-1], path3[0]]):
+                if len(walk) >= len(path3):
+                    if not all(elem in walk for elem in path3):
+                        walk.extend(path3)
+                else:
+                    walk.extend(path3)
+
+            elif self.is_in_edge_list([walk[0], path3[-1]]):
+                if len(path3) >= len(walk):
+                    if not all(elem in path3 for elem in walk):
+                        path3.extend(walk)
+                else:
+                    path3.extend(walk)
+
+            elif walk[0] == path3[-1]:
+
+                if len(path3) >= len(walk[1:]):
+                    if not all(elem in path3 for elem in walk[1:]):
+                        path3.extend(walk[1:])
+                else:
+                    path3.extend(walk[1:])
 
     def add_reverse_edges(self, edge_list):
         reverse_list = []
@@ -65,11 +238,24 @@ class MyAlgorithm:
                     return True
         return False
 
+    def get_walk_length(self, walk):
+        if len(walk) > 0:
+            # Add up the weights across all edges on the shortest path
+            distance = 0
+            n = len(walk)
+            for i in range(0, n):
+                if i + 1 != n:
+                    edge = [walk[i], walk[i + 1]]
+                    distance += self.get_edge_length(edge)
+            return distance
+        else:
+            print("walk is empty")
+            return 0
+
 
 graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
-# graph.print_graph(2)
+graph.print_graph(4)
 alg = MyAlgorithm(graph)
-# alg.sort_edges_descending()
-# alg.create_closed_walk()
+alg.my_algorithm(5, 4)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))

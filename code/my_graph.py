@@ -78,7 +78,9 @@ class MyGraph:
     def get_shortest_path(self, start_node, destination_node):
         return self.__g.get_shortest_paths(
             start_node,
-            to=destination_node
+            to=destination_node,
+            weights=self.__g.es["weight"],
+            output="vpath",
         )
 
     def get_shortest_path_length(self, path):
@@ -99,7 +101,7 @@ class MyGraph:
         return (self.__g.es["weight"])[index]
 
 
-"""
+
 graph = MyGraph()
 graph.generate_random_graph(5, 10,0)
 graph.print_graph(2)
@@ -107,4 +109,4 @@ path=graph.get_shortest_path(0,4)
 print(path[0])
 print(graph.get_edges())
 print(graph.get_shortest_path_length(path))
-"""
+
