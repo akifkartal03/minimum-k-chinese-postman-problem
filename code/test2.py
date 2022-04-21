@@ -26,6 +26,14 @@ for i in range(len(arr)):
     print("%d" % arr[i], end=" ")
 
 """
-arr = [64, 34, 40,25, 12, 22, 101, 0, 11, 90]
-arr2 = [34,25,22,90,1]
-print()
+
+
+arr = [64, 34, 40,25, 12, 22, 10, 0, 11, 90,64]
+arr2 = [40,34]
+arr2.reverse()
+print(arr2)
+
+
+
+
+#print(sublistExists(arr,arr2))

@@ -73,9 +73,7 @@ class MyAlgorithm:
                 # SP(vj, v1)
                 path2 = self.__my_graph.get_shortest_path(path3[1], self.__my_graph.get_initial_vertex())[0]
 
-                print(path1)
-                print(path2)
-                print(path3)
+
 
                 # eğer path1 ile path2 merge olursa
                 if self.try_to_merge(path1, path2, walk):
@@ -92,6 +90,8 @@ class MyAlgorithm:
                 else:
                     walk.extend(self.get_maximum(path1, path2, path3))
                 if len(walk) > 1:
+                    if walk[0] != walk[-1] and self.is_in_edge_list([walk[0],walk[-1]]):
+                        walk.extend(walk[0])
                     self.__closed_walks.append({'walk': walk, 'length': self.get_walk_length(walk)})
 
     def get_maximum(self, a, b, c):
@@ -109,13 +109,17 @@ class MyAlgorithm:
     def check_added(self, edge):
         for e in self.__closed_walks:
             walk = e['walk']
-            n = len(walk)
-            for i in range(0, n):
-                if i + 1 != n:
-                    temp = [walk[i], walk[i + 1]]
-                    if temp == edge:
-                        return True
+            if self.sub_list_exists(walk,edge):
+                return True
+            edge.reverse()
+            if self.sub_list_exists(walk,edge):
+                return True
+        return False
+
+    def sub_list_exists(self,list1, list2):
+        if len(list2) < 2:
             return False
+        return ''.join(map(str, list2)) in ''.join(map(str, list1))
 
     def try_to_merge(self, path1, path2, walk):
 
@@ -123,13 +127,13 @@ class MyAlgorithm:
                 (not self.check_include(path1, path2)):
             if path1[-1] == path2[0]:
                 if len(walk) >= len(path1):
-                    if not all(elem in walk for elem in path1):
+                    if not self.sub_list_exists(walk,path1):
                         walk.extend(path1)
                 else:
                     walk.extend(path1)
 
                 if len(walk) >= len(path2[1:]):
-                    if not all(elem in walk for elem in path2[1:]):
+                    if not self.sub_list_exists(walk,path2[1:]):
                         walk.extend(path2[1:])
                 else:
                     walk.extend(path2[1:])
@@ -138,13 +142,13 @@ class MyAlgorithm:
 
             elif self.is_in_edge_list([path1[0], path2[-1]]):
                 if len(walk) >= len(path2):
-                    if not all(elem in walk for elem in path2):
+                    if not self.sub_list_exists(walk,path2):
                         walk.extend(path2)
                 else:
                     walk.extend(path2)
 
                 if len(walk) >= len(path1):
-                    if not all(elem in walk for elem in path1):
+                    if not self.sub_list_exists(walk,path1):
                         walk.extend(path1)
                 else:
                     walk.extend(path1)
@@ -153,13 +157,13 @@ class MyAlgorithm:
 
             elif self.is_in_edge_list([path1[-1], path2[0]]):
                 if len(walk) >= len(path1):
-                    if not all(elem in walk for elem in path1):
+                    if not self.sub_list_exists(walk,path1):
                         walk.extend(path1)
                 else:
                     walk.extend(path1)
 
                 if len(walk) >= len(path2):
-                    if not all(elem in walk for elem in path2):
+                    if not self.sub_list_exists(walk,path2):
                         walk.extend(path2)
                 else:
                     walk.extend(path2)
@@ -167,13 +171,13 @@ class MyAlgorithm:
                 return True
             elif path1[0] == path2[-1]:
                 if len(walk) >= len(path2):
-                    if not all(elem in walk for elem in path2):
+                    if not self.sub_list_exists(walk,path2):
                         walk.extend(path2)
                 else:
                     walk.extend(path2)
 
                 if len(walk) >= len(path1[1:]):
-                    if not all(elem in walk for elem in path1[1:]):
+                    if not self.sub_list_exists(walk,path1[1:]):
                         walk.extend(path1[1:])
                 else:
                     walk.extend(path1[1:])
@@ -191,7 +195,7 @@ class MyAlgorithm:
             # eğer path1'in son node'u ile path3'un ilk node'u eşitse
             if walk[-1] == path3[0]:
                 if len(walk) >= len(path3[1:]):
-                    if not all(elem in walk for elem in path3[1:]):
+                    if not self.sub_list_exists(walk,path3[1:]):
                         walk.extend(path3[1:])
                 else:
                     walk.extend(path3[1:])
@@ -199,14 +203,14 @@ class MyAlgorithm:
 
             elif self.is_in_edge_list([walk[-1], path3[0]]):
                 if len(walk) >= len(path3):
-                    if not all(elem in walk for elem in path3):
+                    if not self.sub_list_exists(walk,path3):
                         walk.extend(path3)
                 else:
                     walk.extend(path3)
 
             elif self.is_in_edge_list([walk[0], path3[-1]]):
                 if len(path3) >= len(walk):
-                    if not all(elem in path3 for elem in walk):
+                    if not self.sub_list_exists(path3,walk):
                         path3.extend(walk)
                 else:
                     path3.extend(walk)
@@ -214,7 +218,7 @@ class MyAlgorithm:
             elif walk[0] == path3[-1]:
 
                 if len(path3) >= len(walk[1:]):
-                    if not all(elem in path3 for elem in walk[1:]):
+                    if not self.sub_list_exists(path3,walk[1:]):
                         path3.extend(walk[1:])
                 else:
                     path3.extend(walk[1:])

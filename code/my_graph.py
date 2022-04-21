@@ -101,7 +101,7 @@ class MyGraph:
         return (self.__g.es["weight"])[index]
 
 
-
+"""
 graph = MyGraph()
 graph.generate_random_graph(5, 10,0)
 graph.print_graph(2)
@@ -109,4 +109,5 @@ path=graph.get_shortest_path(0,4)
 print(path[0])
 print(graph.get_edges())
 print(graph.get_shortest_path_length(path))
+"""
 
