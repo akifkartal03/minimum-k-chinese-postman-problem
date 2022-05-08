@@ -1,3 +1,5 @@
+from operator import itemgetter
+
 from my_graph import *
 
 
@@ -5,20 +7,27 @@ from my_graph import *
 # I created a class to encapsulate my algorithm.
 class MyAlgorithm:
 
-    def __init__(self, my_graph):
-        self.__my_graph = my_graph
+    def __init__(self):
+        self.__my_graph = None
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
 
-    def my_algorithm(self, s, k):
-        print("algo starts")
+    def my_algorithm(self, s, k, n, i):
+        self.generate_graph(s, n, i)
+        print("graph generated")
         self.sort_edges_descending()
         print("sorted edges:")
         print(self.__sorted_edges)
-        self.create_closed_walk()
-        print("walks:")
+        self.create_closed_walk(k)
+        print("cycles:")
         print(self.__closed_walks)
+
+    def generate_graph(self, s, n, i):
+        graph = MyGraph()
+        graph.generate_random_graph(n, int((n * (n - 1)) / 2), s)
+        graph.print_graph(i)
+        self.__my_graph = graph
 
     def sort_edges_descending(self):
         weights = self.__my_graph.get_weights()
@@ -58,8 +67,8 @@ class MyAlgorithm:
                 return True
         return False
 
-    def create_closed_walk(self):
-
+    def create_closed_walk(self, k):
+        print(self.__sorted_edges)
         for e in self.__sorted_edges:
 
             # e = {vi, vj}
@@ -72,8 +81,6 @@ class MyAlgorithm:
                 path1 = self.__my_graph.get_shortest_path(self.__my_graph.get_initial_vertex(), path3[0])[0]
                 # SP(vj, v1)
                 path2 = self.__my_graph.get_shortest_path(path3[1], self.__my_graph.get_initial_vertex())[0]
-
-
 
                 # eğer path1 ile path2 merge olursa
                 if self.try_to_merge(path1, path2, walk):
@@ -90,9 +97,19 @@ class MyAlgorithm:
                 else:
                     walk.extend(self.get_maximum(path1, path2, path3))
                 if len(walk) > 1:
-                    if walk[0] != walk[-1] and self.is_in_edge_list([walk[0],walk[-1]]):
-                        walk.extend(walk[0])
-                    self.__closed_walks.append({'walk': walk, 'length': self.get_walk_length(walk)})
+                    if walk[0] != walk[-1] and self.is_in_edge_list([walk[0], walk[-1]]):
+                        walk.append(walk[0])
+                    self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk),'count':len(walk)})
+
+        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+        if len(self.__closed_walks) < k:
+            print("k-m multigraf")
+            self.add_dummy_tours(k - len(self.__closed_walks))
+        elif len(self.__closed_walks) > k:
+            print("buyuk")
+            self.merge_tours(k)
+        print("len")
+        print(len(self.__closed_walks))
 
     def get_maximum(self, a, b, c):
 
@@ -108,15 +125,100 @@ class MyAlgorithm:
 
     def check_added(self, edge):
         for e in self.__closed_walks:
-            walk = e['walk']
-            if self.sub_list_exists(walk,edge):
+            walk = e['cycle']
+            if self.sub_list_exists(walk, edge):
                 return True
             edge.reverse()
-            if self.sub_list_exists(walk,edge):
+            if self.sub_list_exists(walk, edge):
                 return True
         return False
 
-    def sub_list_exists(self,list1, list2):
+    def add_dummy_tours(self, missing_number):
+        listLen = len(self.__sorted_edges)
+        k = 0
+        for i in range(listLen - 1):
+            e = self.__sorted_edges[(listLen - i) - 1]
+            walk = [e['end_node'], e['start_node'], e['end_node']]
+            self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk),'count':len(walk)})
+            k = k + 1
+            if k == missing_number:
+                break
+
+    def merge_tours(self, k):
+        listLen = len(self.__closed_walks)
+        n = listLen - k
+        print(n)
+        is_ok = False
+        for i in range(n):
+            listLen = len(self.__closed_walks)
+            if i == 0:
+                if self.merge_round2():
+                    print("round2")
+                    is_ok = True
+                    if listLen == k:
+                        return True
+                if not is_ok and self.merge_round1():
+                    print("round1")
+                    is_ok = True
+                    if listLen == k:
+                        return True
+            if i > 0 and is_ok:
+                is_ok = False
+                if self.merge_round2():
+                    print("round2")
+                    is_ok = True
+                    if listLen == k:
+                        return True
+                if not is_ok and self.merge_round1():
+                    print("round1")
+                    is_ok = True
+                    if listLen == k:
+                        return True
+
+    def merge_round1(self):
+        listLen = len(self.__closed_walks)
+        walk = self.__closed_walks[listLen - 1]
+        walk_path = walk['cycle']
+        for j in range(listLen - 1):
+            next1 = self.__closed_walks[(listLen - j - 1) - 1]
+            next_path = next1['cycle']
+            if walk_path[-1] == next_path[0]:
+                next_path.pop()
+                next_path.extend(walk_path)
+                self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                              'length': self.get_walk_length(next_path)}
+                del self.__closed_walks[listLen - 1]
+                self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                return True
+        return False
+
+    def merge_round2(self):
+        listLen = len(self.__closed_walks)
+        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('count'))
+        for i in range(listLen):
+            sm_el = self.__closed_walks[i]
+            sm_walk = sm_el['cycle']
+            for j in range(i+1,listLen):
+                big_el = self.__closed_walks[j]
+                big_walk = big_el['cycle']
+                n = len(sm_walk)
+                big_ok = True
+                for k in range(0, n):
+                    if k + 1 != n:
+                        edge = [sm_walk[k], sm_walk[k + 1]]
+                        is_ok = False
+                        if self.sub_list_exists(big_walk, edge):
+                            is_ok = True
+                        edge.reverse()
+                        if self.sub_list_exists(big_walk, edge):
+                            is_ok = True
+                        if not is_ok:
+                            big_ok = False
+                if big_ok:
+                    del self.__closed_walks[i]
+                    return True
+        return False
+    def sub_list_exists(self, list1, list2):
         if len(list2) < 2:
             return False
         return ''.join(map(str, list2)) in ''.join(map(str, list1))
@@ -127,13 +229,13 @@ class MyAlgorithm:
                 (not self.check_include(path1, path2)):
             if path1[-1] == path2[0]:
                 if len(walk) >= len(path1):
-                    if not self.sub_list_exists(walk,path1):
+                    if not self.sub_list_exists(walk, path1):
                         walk.extend(path1)
                 else:
                     walk.extend(path1)
 
                 if len(walk) >= len(path2[1:]):
-                    if not self.sub_list_exists(walk,path2[1:]):
+                    if not self.sub_list_exists(walk, path2[1:]):
                         walk.extend(path2[1:])
                 else:
                     walk.extend(path2[1:])
@@ -142,13 +244,13 @@ class MyAlgorithm:
 
             elif self.is_in_edge_list([path1[0], path2[-1]]):
                 if len(walk) >= len(path2):
-                    if not self.sub_list_exists(walk,path2):
+                    if not self.sub_list_exists(walk, path2):
                         walk.extend(path2)
                 else:
                     walk.extend(path2)
 
                 if len(walk) >= len(path1):
-                    if not self.sub_list_exists(walk,path1):
+                    if not self.sub_list_exists(walk, path1):
                         walk.extend(path1)
                 else:
                     walk.extend(path1)
@@ -157,13 +259,13 @@ class MyAlgorithm:
 
             elif self.is_in_edge_list([path1[-1], path2[0]]):
                 if len(walk) >= len(path1):
-                    if not self.sub_list_exists(walk,path1):
+                    if not self.sub_list_exists(walk, path1):
                         walk.extend(path1)
                 else:
                     walk.extend(path1)
 
                 if len(walk) >= len(path2):
-                    if not self.sub_list_exists(walk,path2):
+                    if not self.sub_list_exists(walk, path2):
                         walk.extend(path2)
                 else:
                     walk.extend(path2)
@@ -171,13 +273,13 @@ class MyAlgorithm:
                 return True
             elif path1[0] == path2[-1]:
                 if len(walk) >= len(path2):
-                    if not self.sub_list_exists(walk,path2):
+                    if not self.sub_list_exists(walk, path2):
                         walk.extend(path2)
                 else:
                     walk.extend(path2)
 
                 if len(walk) >= len(path1[1:]):
-                    if not self.sub_list_exists(walk,path1[1:]):
+                    if not self.sub_list_exists(walk, path1[1:]):
                         walk.extend(path1[1:])
                 else:
                     walk.extend(path1[1:])
@@ -195,7 +297,7 @@ class MyAlgorithm:
             # eğer path1'in son node'u ile path3'un ilk node'u eşitse
             if walk[-1] == path3[0]:
                 if len(walk) >= len(path3[1:]):
-                    if not self.sub_list_exists(walk,path3[1:]):
+                    if not self.sub_list_exists(walk, path3[1:]):
                         walk.extend(path3[1:])
                 else:
                     walk.extend(path3[1:])
@@ -203,14 +305,14 @@ class MyAlgorithm:
 
             elif self.is_in_edge_list([walk[-1], path3[0]]):
                 if len(walk) >= len(path3):
-                    if not self.sub_list_exists(walk,path3):
+                    if not self.sub_list_exists(walk, path3):
                         walk.extend(path3)
                 else:
                     walk.extend(path3)
 
             elif self.is_in_edge_list([walk[0], path3[-1]]):
                 if len(path3) >= len(walk):
-                    if not self.sub_list_exists(path3,walk):
+                    if not self.sub_list_exists(path3, walk):
                         path3.extend(walk)
                 else:
                     path3.extend(walk)
@@ -218,7 +320,7 @@ class MyAlgorithm:
             elif walk[0] == path3[-1]:
 
                 if len(path3) >= len(walk[1:]):
-                    if not self.sub_list_exists(path3,walk[1:]):
+                    if not self.sub_list_exists(path3, walk[1:]):
                         path3.extend(walk[1:])
                 else:
                     path3.extend(walk[1:])
@@ -257,9 +359,11 @@ class MyAlgorithm:
             return 0
 
 
+"""
 graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
-alg = MyAlgorithm(graph)
-alg.my_algorithm(5, 4)
+"""
+alg = MyAlgorithm()
+alg.my_algorithm(0, 4, 5, 5)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))

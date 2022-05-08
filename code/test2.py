@@ -25,14 +25,31 @@ print("Sorted array is:")
 for i in range(len(arr)):
     print("%d" % arr[i], end=" ")
 
-"""
 
 
-arr = [64, 34, 40,25, 12, 22, 10, 0, 11, 90,64]
+
+arr = [64, 34, 40,25, 12, 22, 10, 0, 11, 90]
 arr2 = [40,34]
 arr2.reverse()
-print(arr2)
+#print(arr2)
 
+
+listLen = len(arr)
+for i in range(4):
+    e = arr[(listLen - i) - 1]
+    print(e)
+
+import networkx as nx
+from networkx.drawing.nx_pydot import write_dot
+G=nx.MultiGraph()
+G.add_edge(1,2)
+G.add_edge(2,1)
+nx.nx_pydot.write_dot(G,'multi2.dot')
+"""
+
+list1 = [64, 34, 40,25, 12, 22, 10, 0, 11, 90]
+list2 = [40,25,12,10]
+print(''.join(map(str, list2)) in ''.join(map(str, list1)))
 
 
 

@@ -24,10 +24,12 @@ class MyGraph:
             value = random.sample(range(0, self.__g.vcount()), 2)
             if value not in rand_edges:
                 rand_edges.append(value)
-        self.__g.add_edges(rand_edges)
         rand_weights = []
         for x in range(0, len(rand_edges)):
             rand_weights.append(random.randint(5, 40))
+        rand_edges.append(rand_edges[0])
+        self.__g.add_edges(rand_edges)
+        rand_weights.append(rand_weights[0])
         self.__g.simplify(multiple=True, loops=True, combine_edges=None)
         self.__g.es['weight'] = rand_weights
         self.__g.es['label'] = rand_weights
