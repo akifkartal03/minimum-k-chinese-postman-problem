@@ -32,8 +32,6 @@ class MyAlgorithm:
     def sort_edges_descending(self):
         weights = self.__my_graph.get_weights()
         edges = self.__my_graph.get_edges()
-        print("edges")
-        print(edges)
         n = len(weights)
         for i in range(n):
             for j in range(0, n - i - 1):
@@ -99,7 +97,8 @@ class MyAlgorithm:
                 if len(walk) > 1:
                     if walk[0] != walk[-1] and self.is_in_edge_list([walk[0], walk[-1]]):
                         walk.append(walk[0])
-                    self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk),'count':len(walk)})
+                    self.__closed_walks.append(
+                        {'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
 
         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         if len(self.__closed_walks) < k:
@@ -139,7 +138,7 @@ class MyAlgorithm:
         for i in range(listLen - 1):
             e = self.__sorted_edges[(listLen - i) - 1]
             walk = [e['end_node'], e['start_node'], e['end_node']]
-            self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk),'count':len(walk)})
+            self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
             k = k + 1
             if k == missing_number:
                 break
@@ -186,7 +185,8 @@ class MyAlgorithm:
                 next_path.pop()
                 next_path.extend(walk_path)
                 self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
-                                                              'length': self.get_walk_length(next_path)}
+                                                              'length': self.get_walk_length(next_path),
+                                                              'count': len(next_path)}
                 del self.__closed_walks[listLen - 1]
                 self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
                 return True
@@ -198,7 +198,7 @@ class MyAlgorithm:
         for i in range(listLen):
             sm_el = self.__closed_walks[i]
             sm_walk = sm_el['cycle']
-            for j in range(i+1,listLen):
+            for j in range(i + 1, listLen):
                 big_el = self.__closed_walks[j]
                 big_walk = big_el['cycle']
                 n = len(sm_walk)
@@ -218,6 +218,7 @@ class MyAlgorithm:
                     del self.__closed_walks[i]
                     return True
         return False
+
     def sub_list_exists(self, list1, list2):
         if len(list2) < 2:
             return False
@@ -226,7 +227,7 @@ class MyAlgorithm:
     def try_to_merge(self, path1, path2, walk):
 
         if len(path1) > 1 and len(path2) > 1 and \
-                (not self.check_include(path1, path2)):
+                (not self.sub_list_exists(path1, path2)):
             if path1[-1] == path2[0]:
                 if len(walk) >= len(path1):
                     if not self.sub_list_exists(walk, path1):
@@ -293,7 +294,7 @@ class MyAlgorithm:
     def add_edge_to_walk(self, walk, path3):
         # walk eğer path'ü içermiyorsa path3'u ekle
         if len(walk) > 1 and len(path3) > 1 and \
-                (not self.check_include(walk, path3)):
+                (not self.sub_list_exists(walk, path3)):
             # eğer path1'in son node'u ile path3'un ilk node'u eşitse
             if walk[-1] == path3[0]:
                 if len(walk) >= len(path3[1:]):
@@ -301,7 +302,6 @@ class MyAlgorithm:
                         walk.extend(path3[1:])
                 else:
                     walk.extend(path3[1:])
-
 
             elif self.is_in_edge_list([walk[-1], path3[0]]):
                 if len(walk) >= len(path3):
@@ -365,5 +365,5 @@ graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
 alg = MyAlgorithm()
-alg.my_algorithm(0, 4, 5, 5)
+alg.my_algorithm(1, 8, 10, 6)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
