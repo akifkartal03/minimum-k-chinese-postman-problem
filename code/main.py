@@ -1,5 +1,5 @@
 from operator import itemgetter
-
+import time
 from my_graph import *
 
 
@@ -14,6 +14,7 @@ class MyAlgorithm:
         self.__walks_lengths = []
 
     def my_algorithm(self, s, k, n, i):
+        self.init_values1()
         self.generate_graph(s, n, i)
         print("graph generated")
         self.sort_edges_descending()
@@ -22,6 +23,39 @@ class MyAlgorithm:
         self.create_closed_walk(k)
         print("cycles:")
         print(self.__closed_walks)
+
+    def my_algorithm1(self, s, k, n, i, is_new,is_time):
+        if is_new:
+            self.init_values1()
+            self.generate_graph(s, n, i)
+        else:
+            self.init_values2()
+        print("graph generated")
+        start_time = time.perf_counter()
+        self.sort_edges_descending()
+        print("sorted edges:")
+        print(self.__sorted_edges)
+        self.create_closed_walk(k)
+        total_time = (time.perf_counter() - start_time)
+        print("cycles:")
+        print(self.__closed_walks)
+        if is_time:
+            return total_time
+        else:
+            e = self.__closed_walks[0]
+            return e['length']
+
+
+    def init_values1(self):
+        self.__my_graph = None
+        self.__sorted_edges = []
+        self.__closed_walks = []
+        self.__walks_lengths = []
+
+    def init_values2(self):
+        self.__sorted_edges = []
+        self.__closed_walks = []
+        self.__walks_lengths = []
 
     def generate_graph(self, s, n, i):
         graph = MyGraph()
@@ -104,9 +138,11 @@ class MyAlgorithm:
         if len(self.__closed_walks) < k:
             print("k-m multigraf")
             self.add_dummy_tours(k - len(self.__closed_walks))
+            self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         elif len(self.__closed_walks) > k:
             print("buyuk")
             self.merge_tours(k)
+            self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         print("len")
         print(len(self.__closed_walks))
 
@@ -364,6 +400,6 @@ graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
-alg = MyAlgorithm()
-alg.my_algorithm(1, 8, 10, 6)
+# alg = MyAlgorithm()
+# alg.my_algorithm(1, 8, 10, 6)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
