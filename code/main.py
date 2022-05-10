@@ -45,6 +45,10 @@ class MyAlgorithm:
             e = self.__closed_walks[0]
             return e['length']
 
+    def simple_algo(self):
+        print("simple algo to compare")
+        #travelling salesmandaki tüm olasıkları bulma
+        #yani exhausted search algoritmasını kullan
 
     def init_values1(self):
         self.__my_graph = None
@@ -114,15 +118,14 @@ class MyAlgorithm:
                 # SP(vj, v1)
                 path2 = self.__my_graph.get_shortest_path(path3[1], self.__my_graph.get_initial_vertex())[0]
 
-                # eğer path1 ile path2 merge olursa
+                # try to create closed walk
                 if self.try_to_merge(path1, path2, walk):
-                    # path3 ile birleştirmeye çalış
                     self.add_edge_to_walk(walk, path3)
-                # eğer path1 ile path3 merge olursa
+                # try to create closed walk
                 elif self.try_to_merge(path1, path3, walk):
                     # path2 ile birleştirmeye çalış
                     self.add_edge_to_walk(walk, path2)
-                # eğer path2 ile path3 merge olursa
+                # try to create closed walk
                 elif self.try_to_merge(path2, path3, walk):
                     # path1 ile birleştirmeye çalış
                     self.add_edge_to_walk(walk, path1)
