@@ -1,6 +1,7 @@
 from operator import itemgetter
 import time
 from my_graph import *
+from simple_algo import *
 
 
 # I didn't want to bother with global variables therefore,
@@ -9,12 +10,15 @@ class MyAlgorithm:
 
     def __init__(self):
         self.__my_graph = None
+        self.__edges = None
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
+        self.__initial_vertex = 0
 
     def my_algorithm(self, s, k, n, i):
         self.init_values1()
+        self.__initial_vertex = s
         self.generate_graph(s, n, i)
         print("graph generated")
         self.sort_edges_descending()
@@ -28,6 +32,7 @@ class MyAlgorithm:
         if is_new:
             self.init_values1()
             self.generate_graph(s, n, i)
+            self.__initial_vertex = s
         else:
             self.init_values2()
         print("graph generated")
@@ -55,11 +60,13 @@ class MyAlgorithm:
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
+        self.__initial_vertex = 0
 
     def init_values2(self):
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
+        self.__initial_vertex = 0
 
     def generate_graph(self, s, n, i):
         graph = MyGraph()
@@ -70,7 +77,9 @@ class MyAlgorithm:
     def sort_edges_descending(self):
         weights = self.__my_graph.get_weights()
         edges = self.__my_graph.get_edges()
+        self.__edges = edges
         n = len(weights)
+        print(edges)
         for i in range(n):
             for j in range(0, n - i - 1):
                 if weights[j] < weights[j + 1]:
@@ -117,6 +126,10 @@ class MyAlgorithm:
                 path1 = self.__my_graph.get_shortest_path(self.__my_graph.get_initial_vertex(), path3[0])[0]
                 # SP(vj, v1)
                 path2 = self.__my_graph.get_shortest_path(path3[1], self.__my_graph.get_initial_vertex())[0]
+
+                print(path1)
+                print(path2)
+                print(path3)
 
                 # try to create closed walk
                 if self.try_to_merge(path1, path2, walk):
@@ -403,6 +416,6 @@ graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
-# alg = MyAlgorithm()
-# alg.my_algorithm(1, 8, 10, 6)
+alg = MyAlgorithm()
+alg.my_algorithm(0, 4, 6, 10)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
