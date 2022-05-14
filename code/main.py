@@ -2,6 +2,7 @@ from operator import itemgetter
 import time
 from my_graph import *
 from simple_algo import *
+import sys
 
 
 # I didn't want to bother with global variables therefore,
@@ -13,12 +14,15 @@ class MyAlgorithm:
         self.__edges = None
         self.__sorted_edges = []
         self.__closed_walks = []
+        self.__second_closed_walks = None
         self.__walks_lengths = []
         self.__initial_vertex = 0
+        self.__k = 0
 
     def my_algorithm(self, s, k, n, i):
         self.init_values1()
         self.__initial_vertex = s
+        self.__k = k
         self.generate_graph(s, n, i)
         print("graph generated")
         self.sort_edges_descending()
@@ -27,6 +31,9 @@ class MyAlgorithm:
         self.create_closed_walk(k)
         print("cycles:")
         print(self.__closed_walks)
+        self.simple_algo()
+        print("cycles2:")
+        print(self.__second_closed_walks)
 
     def my_algorithm1(self, s, k, n, i, is_new,is_time):
         if is_new:
@@ -35,6 +42,8 @@ class MyAlgorithm:
             self.__initial_vertex = s
         else:
             self.init_values2()
+        self.__k = k
+        self.__initial_vertex = s
         print("graph generated")
         start_time = time.perf_counter()
         self.sort_edges_descending()
@@ -52,21 +61,37 @@ class MyAlgorithm:
 
     def simple_algo(self):
         print("simple algo to compare")
-        #travelling salesmandaki tüm olasıkları bulma
-        #yani exhausted search algoritmasını kullan
-
+        found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
+        #self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
+        maxLen = sys.maxsize
+        for e in found:
+            lenList = []
+            simple_closed_walk = []
+            for walk in e:
+                len1 = self.get_walk_length(walk)
+                lenList.append(len1)
+                simple_closed_walk.append({'cycle': walk, 'length': len1, 'count': len(walk)})
+            tempmax = max(lenList)
+            if tempmax < maxLen:
+                self.__second_closed_walks = simple_closed_walk
+        if self.__second_closed_walks:
+            self.__second_closed_walks = sorted(self.__second_closed_walks, key=itemgetter('length'), reverse=True)
     def init_values1(self):
         self.__my_graph = None
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
         self.__initial_vertex = 0
+        self.__k = 0
+        self.__second_closed_walks = None
 
     def init_values2(self):
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
         self.__initial_vertex = 0
+        self.__k = 0
+        self.__second_closed_walks = None
 
     def generate_graph(self, s, n, i):
         graph = MyGraph()

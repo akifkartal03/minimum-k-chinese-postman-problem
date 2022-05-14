@@ -13,8 +13,8 @@ def main(edges,init_vertex,k_value):
     global found
     k = k_value
     initial_vertex = init_vertex
-    #graph = map(list, edges)
-    graph = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [1, 5], [2, 3], [2, 5], [4, 5]]
+    graph = map(list, edges)
+    #graph = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [1, 5], [2, 3], [2, 5], [4, 5]]
     print(k)
     print(init_vertex)
     print(graph)
@@ -27,6 +27,7 @@ def main(edges,init_vertex,k_value):
     n = len(cycles)
     printCombination(cycles, n, k)
     print(found)
+    return found
 
 def findNewCycles(path):
     start_node = path[0]
@@ -105,7 +106,7 @@ def combinationUtil(arr, data, start,
     # Current combination is ready
     # to be printed, print it
     if (index == r):
-        print(findMatch(data))
+        findMatch(data)
         return
 
     # replace index with all
@@ -175,4 +176,4 @@ def main2():
     data = [[0, 4, 1,0], [0, 2, 5, 4, 1,0], [0, 3, 2, 5, 4, 1,0]]
     findMatch(data)
 
-main(0,0,3)
+#main(0,0,3)
