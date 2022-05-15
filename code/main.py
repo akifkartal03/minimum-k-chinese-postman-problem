@@ -61,7 +61,9 @@ class MyAlgorithm:
 
     def simple_algo(self):
         print("simple algo to compare")
-        found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
+        smp = MySimpleAlgorithm(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
+        found = smp.main()
+        #found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
         #self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
         maxLen = sys.maxsize
         for e in found:
@@ -76,6 +78,7 @@ class MyAlgorithm:
                 self.__second_closed_walks = simple_closed_walk
         if self.__second_closed_walks:
             self.__second_closed_walks = sorted(self.__second_closed_walks, key=itemgetter('length'), reverse=True)
+
     def init_values1(self):
         self.__my_graph = None
         self.__sorted_edges = []
@@ -442,5 +445,5 @@ graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
 alg = MyAlgorithm()
-alg.my_algorithm(0, 4, 6, 10)
+alg.my_algorithm(0, 3, 5, 11)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
