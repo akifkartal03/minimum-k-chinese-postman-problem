@@ -98,7 +98,9 @@ class MyAlgorithm:
 
     def generate_graph(self, s, n, i):
         graph = MyGraph()
-        graph.generate_random_graph(n, int((n * (n - 1)) / 2), s)
+        res = graph.generate_random_graph(n, int((n * (n - 1)) / 2), s)
+        while res:
+            res = graph.generate_random_graph(n, int((n * (n - 1)) / 2), s)
         graph.print_graph(i)
         self.__my_graph = graph
 
@@ -154,10 +156,6 @@ class MyAlgorithm:
                 path1 = self.__my_graph.get_shortest_path(self.__my_graph.get_initial_vertex(), path3[0])[0]
                 # SP(vj, v1)
                 path2 = self.__my_graph.get_shortest_path(path3[1], self.__my_graph.get_initial_vertex())[0]
-
-                print(path1)
-                print(path2)
-                print(path3)
 
                 # try to create closed walk
                 if self.try_to_merge(path1, path2, walk):

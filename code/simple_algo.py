@@ -2,6 +2,8 @@
 # I created a class to encapsulate my simple algorithm.
 
 #todo
+#cycle da initial vertex sayısı k dan az veya eşitşe kendin cycle eklee
+
 #simple algoritmada graph'ın cycle üretemediği durumları kontrol et ve cycler ekle...
 #kendi algoritmanda olduğu gibi
 #sonra test et ve biraz kendi alogritmanı toparla
@@ -21,6 +23,11 @@ class MySimpleAlgorithm:
     def main(self):
         print(self.k)
         print(self.initial_vertex)
+        new_edges = []
+        for edge in self.graph:
+            if self.initial_vertex in edge:
+                new_edges.append([edge[1],edge[0]])
+        self.graph.extend(new_edges)
         print(self.graph)
         for edge in self.graph:
             for node in edge:

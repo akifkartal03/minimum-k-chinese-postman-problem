@@ -20,21 +20,76 @@ class MyGraph:
             self.__g.vs[i]["label"] = i
 
         rand_edges = []
+        degrees = [0]*number_of_vertex
         for x in range(0, number_of_edges):
             value = random.sample(range(0, self.__g.vcount()), 2)
-            if value not in rand_edges:
-                rand_edges.append(value)
-        rand_weights = []
-        for x in range(0, len(rand_edges)):
-            rand_weights.append(random.randint(5, 40))
-        rand_edges.append(rand_edges[0])
+            while value in rand_edges:
+                value = random.sample(range(0, self.__g.vcount()), 2)
+            rand_edges.append(value)
+            degrees[value[0]] = degrees[value[0]] + 1
+            degrees[value[1]] = degrees[value[1]] + 1
+        i = 0
+        for e in degrees:
+            if e == 0:
+                return True
+            if e == 1:
+                print("akiiff")
+                value = random.randint(0, number_of_vertex)
+                while value == i:
+                    value = random.randint(0, number_of_vertex)
+                edge = [i, value]
+                if edge in rand_edges:
+                    edge.reverse()
+                rand_edges.append(edge)
+            i = i + 1
+        """
+        for x in range(0, number_of_vertex):
+            if self.__g.degree(x) == 0:
+                return True
+            if self.__g.degree(x) == 1:
+                print("akif")
+                print(self.__g.degree(x))
+                print(x)
+                value = random.randint(0, number_of_vertex)
+                while value == x or self.is_in(x, value, rand_edges):
+                    value = random.randint(0, number_of_vertex)
+                edge = [x, value]
+                rand_edges.append(edge)
+                self.__g.add_edge(x,value)
+                degrees.append(self.__g.degree(x) + 1)
+            else:
+                degrees.append(self.__g.degree(x))
+
+        if all(x % 2 == 0 for x in degrees):
+            print("all oddd")
+            index_min = min(range(len(degrees)), key=degrees.__getitem__)
+            value = random.randint(0, number_of_vertex)
+            while value == index_min or self.is_in(index_min, value, rand_edges):
+                value = random.randint(0, number_of_vertex)
+            edge = [index_min, value]
+            rand_edges.append(edge)
+            self.__g.add_edge(index_min, value)
+        """
         self.__g.add_edges(rand_edges)
-        rand_weights.append(rand_weights[0])
-        self.__g.simplify(multiple=True, loops=True, combine_edges=None)
+        print(self.get_edges())
+        print(rand_edges)
+        rand_weights = []
+        for x in range(0, len(self.__g.get_edgelist())):
+            rand_weights.append(random.randint(5, 40))
+        self.__g.simplify(combine_edges=None)
         self.__g.es['weight'] = rand_weights
         self.__g.es['label'] = rand_weights
         self.__g.es["curved"] = False
+        return False
 
+    def is_in(self,x,value,edges):
+        edge = [x,value]
+        if edge in edges:
+            return True
+        edge.reverse()
+        if edge in edges:
+            return True
+        return False
     def print_graph(self, graph_number):
         visual_style = {}
 
