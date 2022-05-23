@@ -20,28 +20,11 @@ class MyGraph:
             self.__g.vs[i]["label"] = i
 
         rand_edges = []
-        degrees = [0]*number_of_vertex
         for x in range(0, number_of_edges):
             value = random.sample(range(0, self.__g.vcount()), 2)
             while value in rand_edges:
                 value = random.sample(range(0, self.__g.vcount()), 2)
             rand_edges.append(value)
-            degrees[value[0]] = degrees[value[0]] + 1
-            degrees[value[1]] = degrees[value[1]] + 1
-        i = 0
-        for e in degrees:
-            if e == 0:
-                return True
-            if e == 1:
-                print("akiiff")
-                value = random.randint(0, number_of_vertex)
-                while value == i:
-                    value = random.randint(0, number_of_vertex)
-                edge = [i, value]
-                if edge in rand_edges:
-                    edge.reverse()
-                rand_edges.append(edge)
-            i = i + 1
         """
         for x in range(0, number_of_vertex):
             if self.__g.degree(x) == 0:
@@ -71,8 +54,6 @@ class MyGraph:
             self.__g.add_edge(index_min, value)
         """
         self.__g.add_edges(rand_edges)
-        print(self.get_edges())
-        print(rand_edges)
         rand_weights = []
         for x in range(0, len(self.__g.get_edgelist())):
             rand_weights.append(random.randint(5, 40))

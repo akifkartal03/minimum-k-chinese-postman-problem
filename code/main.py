@@ -18,11 +18,13 @@ class MyAlgorithm:
         self.__walks_lengths = []
         self.__initial_vertex = 0
         self.__k = 0
+        self.__n = 0
 
     def my_algorithm(self, s, k, n, i):
         self.init_values1()
         self.__initial_vertex = s
         self.__k = k
+        self.__n = n
         self.generate_graph(s, n, i)
         print("graph generated")
         self.sort_edges_descending()
@@ -43,6 +45,7 @@ class MyAlgorithm:
         else:
             self.init_values2()
         self.__k = k
+        self.__n = n
         self.__initial_vertex = s
         print("graph generated")
         start_time = time.perf_counter()
@@ -61,7 +64,7 @@ class MyAlgorithm:
 
     def simple_algo(self):
         print("simple algo to compare")
-        smp = MySimpleAlgorithm(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
+        smp = MySimpleAlgorithm(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k,self.__n)
         found = smp.main()
         #found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
         #self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
@@ -87,6 +90,7 @@ class MyAlgorithm:
         self.__initial_vertex = 0
         self.__k = 0
         self.__second_closed_walks = None
+        self.__n = 0
 
     def init_values2(self):
         self.__sorted_edges = []
@@ -95,6 +99,7 @@ class MyAlgorithm:
         self.__initial_vertex = 0
         self.__k = 0
         self.__second_closed_walks = None
+
 
     def generate_graph(self, s, n, i):
         graph = MyGraph()
@@ -151,7 +156,6 @@ class MyAlgorithm:
             walk = []
             # if e is not already covered by an existing tour.
             if not self.check_added(path3):
-
                 # SP(v1, vi)
                 path1 = self.__my_graph.get_shortest_path(self.__my_graph.get_initial_vertex(), path3[0])[0]
                 # SP(vj, v1)
@@ -177,6 +181,7 @@ class MyAlgorithm:
                         {'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
 
         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+        print(self.__closed_walks)
         if len(self.__closed_walks) < k:
             print("k-m multigraf")
             self.add_dummy_tours(k - len(self.__closed_walks))
@@ -205,8 +210,8 @@ class MyAlgorithm:
             walk = e['cycle']
             if self.sub_list_exists(walk, edge):
                 return True
-            edge.reverse()
-            if self.sub_list_exists(walk, edge):
+            reverse_edge = [edge[1],edge[0]]
+            if self.sub_list_exists(walk, reverse_edge):
                 return True
         return False
 
@@ -232,11 +237,13 @@ class MyAlgorithm:
                 if self.merge_round2():
                     print("round2")
                     is_ok = True
+                    listLen = len(self.__closed_walks)
                     if listLen == k:
                         return True
                 if not is_ok and self.merge_round1():
                     print("round1")
                     is_ok = True
+                    listLen = len(self.__closed_walks)
                     if listLen == k:
                         return True
             if i > 0 and is_ok:
@@ -244,35 +251,39 @@ class MyAlgorithm:
                 if self.merge_round2():
                     print("round2")
                     is_ok = True
+                    listLen = len(self.__closed_walks)
                     if listLen == k:
                         return True
                 if not is_ok and self.merge_round1():
                     print("round1")
                     is_ok = True
+                    listLen = len(self.__closed_walks)
                     if listLen == k:
                         return True
 
     def merge_round1(self):
         listLen = len(self.__closed_walks)
-        walk = self.__closed_walks[listLen - 1]
-        walk_path = walk['cycle']
-        for j in range(listLen - 1):
-            next1 = self.__closed_walks[(listLen - j - 1) - 1]
-            next_path = next1['cycle']
-            if walk_path[-1] == next_path[0]:
-                next_path.pop()
-                next_path.extend(walk_path)
-                self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
-                                                              'length': self.get_walk_length(next_path),
-                                                              'count': len(next_path)}
-                del self.__closed_walks[listLen - 1]
-                self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
-                return True
+        for i in range(listLen):
+            sm_el = self.__closed_walks[listLen-i-1]
+            walk_path = sm_el['cycle']
+            for j in range(i,listLen - 1):
+                next1 = self.__closed_walks[(listLen - j - 1) - 1]
+                next_path = next1['cycle']
+                if walk_path[-1] == next_path[0]:
+                    next_path.pop()
+                    next_path.extend(walk_path)
+                    self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                                  'length': self.get_walk_length(next_path),
+                                                                  'count': len(next_path)}
+                    del self.__closed_walks[listLen - 1]
+                    self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                    return True
         return False
 
     def merge_round2(self):
         listLen = len(self.__closed_walks)
         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('count'))
+
         for i in range(listLen):
             sm_el = self.__closed_walks[i]
             sm_walk = sm_el['cycle']
@@ -295,6 +306,7 @@ class MyAlgorithm:
                 if big_ok:
                     del self.__closed_walks[i]
                     return True
+        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         return False
 
     def sub_list_exists(self, list1, list2):
@@ -443,5 +455,5 @@ graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
 alg = MyAlgorithm()
-alg.my_algorithm(0, 3, 5, 11)
+alg.my_algorithm(0, 4, 6, 12)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
