@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>label_initial_vertex</class>
+ <widget class="QMainWindow" name="label_initial_vertex">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1130</width>
+    <width>1370</width>
     <height>680</height>
    </rect>
   </property>
@@ -24,10 +24,10 @@
    </size>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_generate_graph">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>180</x>
       <y>140</y>
       <width>101</width>
       <height>31</height>
@@ -37,25 +37,12 @@
      <string>Generate Graph</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QLineEdit" name="txt_k">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>140</y>
-      <width>101</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Show Graph</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
+      <x>40</x>
       <y>60</y>
-      <width>151</width>
+      <width>161</width>
       <height>21</height>
      </rect>
     </property>
@@ -66,7 +53,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>10</y>
       <width>91</width>
       <height>31</height>
@@ -77,24 +64,25 @@
       <pointsize>11</pointsize>
       <weight>75</weight>
       <bold>true</bold>
+      <underline>true</underline>
      </font>
     </property>
     <property name="text">
-     <string>Paramaters</string>
+     <string>Parameters</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>50</y>
-      <width>31</width>
-      <height>31</height>
+      <x>10</x>
+      <y>60</y>
+      <width>21</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>11</pointsize>
+      <pointsize>9</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
@@ -103,12 +91,12 @@
      <string>k :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="txt_initial_vertex">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>110</x>
       <y>100</y>
-      <width>151</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -119,49 +107,49 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>90</y>
-      <width>31</width>
-      <height>31</height>
+      <x>10</x>
+      <y>100</y>
+      <width>111</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>11</pointsize>
+      <pointsize>9</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>n :</string>
+     <string>Initial Vertex:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>220</x>
       <y>90</y>
-      <width>31</width>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>11</pointsize>
+      <pointsize>9</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>s :</string>
+     <string>Number of Edge :</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="txt_numberof_edge">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>340</x>
       <y>100</y>
-      <width>151</width>
+      <width>81</width>
       <height>21</height>
      </rect>
     </property>
@@ -169,12 +157,12 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="txt_numberof_node">
     <property name="geometry">
      <rect>
-      <x>270</x>
+      <x>340</x>
       <y>60</y>
-      <width>151</width>
+      <width>81</width>
       <height>21</height>
      </rect>
     </property>
@@ -182,31 +170,31 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
+   <widget class="QLabel" name="label_node">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>220</x>
       <y>50</y>
-      <width>31</width>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>11</pointsize>
+      <pointsize>9</pointsize>
       <weight>75</weight>
       <bold>true</bold>
      </font>
     </property>
     <property name="text">
-     <string>e :</string>
+     <string>Number of Node :</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
       <x>450</x>
-      <y>0</y>
+      <y>10</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -216,18 +204,19 @@
       <pointsize>11</pointsize>
       <weight>75</weight>
       <bold>true</bold>
+      <underline>true</underline>
      </font>
     </property>
     <property name="text">
      <string>Algorithms</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="graph_image">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
-      <width>411</width>
+      <y>210</y>
+      <width>405</width>
       <height>411</height>
      </rect>
     </property>
@@ -240,7 +229,7 @@
      <rect>
       <x>440</x>
       <y>50</y>
-      <width>331</width>
+      <width>450</width>
       <height>591</height>
      </rect>
     </property>
@@ -254,7 +243,7 @@
     <property name="title">
      <string>Heuristic Algorithm</string>
     </property>
-    <widget class="QPushButton" name="pushButton_3">
+    <widget class="QPushButton" name="btn_run_heuristic">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -264,10 +253,11 @@
       </rect>
      </property>
      <property name="text">
-      <string>Run Heurisitic Algorithm</string>
+      <string>Run 
+Heurisitic Algorithm</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit">
+    <widget class="QTextEdit" name="cycles_heuristic">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -275,12 +265,15 @@
       <rect>
        <x>10</x>
        <y>150</y>
-       <width>311</width>
+       <width>431</width>
        <height>431</height>
       </rect>
      </property>
      <property name="readOnly">
       <bool>true</bool>
+     </property>
+     <property name="placeholderText">
+      <string>cycle: [0,1,2,3,4,5,6,7,8,9,1,1,1,1,1,1,1,1,1,1,1,1], length: 123 ,count: 15</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_8">
@@ -297,6 +290,7 @@
        <pointsize>9</pointsize>
        <weight>75</weight>
        <bold>true</bold>
+       <underline>true</underline>
       </font>
      </property>
      <property name="text">
@@ -306,8 +300,8 @@
     <widget class="QLabel" name="label_10">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>20</y>
+       <x>190</x>
+       <y>60</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -317,18 +311,22 @@
        <pointsize>9</pointsize>
        <weight>75</weight>
        <bold>true</bold>
+       <underline>false</underline>
       </font>
      </property>
      <property name="text">
-      <string>Taken Time</string>
+      <string>Elapsed Time:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_12">
+    <widget class="QLabel" name="time_heuristic">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>290</x>
        <y>60</y>
-       <width>91</width>
+       <width>151</width>
        <height>31</height>
       </rect>
      </property>
@@ -343,16 +341,16 @@
       <string>0s</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>790</x>
+      <x>910</x>
       <y>50</y>
-      <width>331</width>
+      <width>450</width>
       <height>591</height>
      </rect>
     </property>
@@ -366,7 +364,7 @@
     <property name="title">
      <string>Exhaustive Search Algorithm</string>
     </property>
-    <widget class="QPushButton" name="pushButton_4">
+    <widget class="QPushButton" name="btn_run_exhaustive">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -380,13 +378,13 @@
 Algorithm</string>
      </property>
     </widget>
-    <widget class="QTextEdit" name="textEdit_2">
+    <widget class="QTextEdit" name="cycles_exhaustive">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>150</y>
-       <width>311</width>
-       <height>431</height>
+       <width>431</width>
+       <height>437</height>
       </rect>
      </property>
      <property name="readOnly">
@@ -407,6 +405,7 @@ Algorithm</string>
        <pointsize>9</pointsize>
        <weight>75</weight>
        <bold>true</bold>
+       <underline>true</underline>
       </font>
      </property>
      <property name="text">
@@ -416,8 +415,8 @@ Algorithm</string>
     <widget class="QLabel" name="label_11">
      <property name="geometry">
       <rect>
-       <x>210</x>
-       <y>20</y>
+       <x>190</x>
+       <y>60</y>
        <width>91</width>
        <height>31</height>
       </rect>
@@ -427,18 +426,22 @@ Algorithm</string>
        <pointsize>9</pointsize>
        <weight>75</weight>
        <bold>true</bold>
+       <underline>false</underline>
       </font>
      </property>
      <property name="text">
-      <string>Taken Time</string>
+      <string>Elapsed Time:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
+    <widget class="QLabel" name="time_exhaustive">
      <property name="geometry">
       <rect>
-       <x>200</x>
+       <x>290</x>
        <y>60</y>
-       <width>91</width>
+       <width>151</width>
        <height>31</height>
       </rect>
      </property>
@@ -453,7 +456,7 @@ Algorithm</string>
       <string>0s</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignCenter</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
     </widget>
    </widget>
@@ -463,7 +466,7 @@ Algorithm</string>
       <x>10</x>
       <y>180</y>
       <width>121</width>
-      <height>31</height>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
@@ -471,10 +474,52 @@ Algorithm</string>
       <pointsize>9</pointsize>
       <weight>75</weight>
       <bold>true</bold>
+      <underline>true</underline>
      </font>
     </property>
     <property name="text">
      <string>Generated Graph</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_15">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>620</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+      <underline>true</underline>
+     </font>
+    </property>
+    <property name="text">
+     <string>Paralel Edges:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="paralel_edges">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>621</y>
+      <width>331</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
@@ -483,7 +528,7 @@ Algorithm</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1130</width>
+     <width>1370</width>
      <height>21</height>
     </rect>
    </property>

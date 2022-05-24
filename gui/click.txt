@@ -1,0 +1,10 @@
+
+
+self.pushButton.clicked.connect(lambda:self.generate_graph())
+
+
+    def generate_graph(self):
+        print("clicked")
+        image = QPixmap("graph12.png")
+        self.label_7.setPixmap(image)
+        self.textEdit.setText("akif")
