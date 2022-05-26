@@ -454,6 +454,6 @@ graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
-alg = MyAlgorithm()
-alg.my_algorithm(0, 4, 6, 12)
+#alg = MyAlgorithm()
+#alg.my_algorithm(0, 4, 6, 12)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
