@@ -36,10 +36,10 @@ class MyAlgorithm:
         # print("cycles2:")
         # print(self.__second_closed_walks)
 
-    def my_algorithm1(self, s, k, n,e, i, is_new, is_time):
+    def my_algorithm1(self, s, k, n, e, i, is_new, is_time):
         if is_new:
             self.init_values1()
-            self.generate_graph(s, n,e, i)
+            self.generate_graph(s, n, e,k, i)
             self.__initial_vertex = s
         else:
             self.init_values2()
@@ -64,6 +64,8 @@ class MyAlgorithm:
     def simple_algo(self):
         print("simple algo to compare")
         start_time = time.perf_counter()
+        if len(self.__sorted_edges) < 1:
+            self.sort_edges_descending()
         smp = MySimpleAlgorithm(self.__my_graph.get_edges(), self.__my_graph.get_initial_vertex(), self.__k, self.__n)
         found = smp.main()
         # found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
@@ -83,6 +85,7 @@ class MyAlgorithm:
         if self.__second_closed_walks:
             self.__second_closed_walks = sorted(self.__second_closed_walks, key=itemgetter('length'), reverse=True)
         total_time = (time.perf_counter() - start_time)
+        print("simple finishh")
         return [self.__second_closed_walks, total_time]
 
     def init_values1(self):
@@ -103,10 +106,11 @@ class MyAlgorithm:
         self.__k = 0
         self.__second_closed_walks = None
 
-    def generate_graph(self, s, n, e, i):
+    def generate_graph(self, s, n, e,k, i):
         self.init_values1()
         self.__initial_vertex = s
         self.__n = n
+        self.__k = k
         graph = MyGraph()
         res = graph.generate_random_graph(n, e, s)
         graph.print_graph(i)
@@ -268,22 +272,77 @@ class MyAlgorithm:
 
     def merge_round1(self):
         listLen = len(self.__closed_walks)
+        breakk = False
         for i in range(listLen):
             sm_el = self.__closed_walks[listLen - i - 1]
             walk_path = sm_el['cycle']
             for j in range(i, listLen - 1):
-                next1 = self.__closed_walks[(listLen - j - 1) - 1]
-                next_path = next1['cycle']
-                if walk_path[-1] == next_path[0]:
-                    next_path.pop()
-                    next_path.extend(walk_path)
-                    self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
-                                                                  'length': self.get_walk_length(next_path),
-                                                                  'count': len(next_path)}
-                    del self.__closed_walks[listLen - 1]
-                    self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
-                    return True
-                
+                if j < 2:
+                    next1 = self.__closed_walks[(listLen - j - 1) - 1]
+                    next_path = next1['cycle']
+                    if walk_path[0] == next_path[-1]:
+                        next_path.pop()
+                        next_path.extend(walk_path)
+                        self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                                      'length': self.get_walk_length(next_path),
+                                                                      'count': len(next_path)}
+                        del self.__closed_walks[listLen - i - 1]
+                        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                        return True
+                    if self.is_in_edge_list([walk_path[0], next_path[-1]]):
+                        walk_path.append(next_path[-1])
+                        next_path.extend(walk_path)
+                        self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                                      'length': self.get_walk_length(next_path),
+                                                                      'count': len(next_path)}
+                        del self.__closed_walks[listLen - i - 1]
+                        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                        return True
+                elif i != (listLen - 1) and (listLen - (j - 1) - 1) - 1 != listLen - (i + 1) - 1:
+                    next12 = self.__closed_walks[(listLen - (j - 1) - 1) - 1]
+                    next_path2 = next12['cycle']
+                    sm_el1 = self.__closed_walks[listLen - (i + 1) - 1]
+                    walk_path1 = sm_el1['cycle']
+                    if walk_path1[0] == next_path2[-1]:
+                        next_path2.pop()
+                        next_path2.extend(walk_path1)
+                        self.__closed_walks[(listLen - (j - 1) - 1) - 1] = {'cycle': next_path2,
+                                                                            'length': self.get_walk_length(next_path2),
+                                                                            'count': len(next_path2)}
+                        del self.__closed_walks[listLen - (i + 1) - 1]
+                        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                        return True
+                    if self.is_in_edge_list([walk_path1[0], next_path2[-1]]):
+                        walk_path1.append(next_path2[-1])
+                        next_path2.extend(walk_path1)
+                        self.__closed_walks[(listLen - (j - 1) - 1) - 1] = {'cycle': next_path2,
+                                                                            'length': self.get_walk_length(next_path2),
+                                                                            'count': len(next_path2)}
+                        del self.__closed_walks[listLen - (i+1) - 1]
+                        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                        return True
+                if j > 1:
+                    next1 = self.__closed_walks[(listLen - j - 1) - 1]
+                    next_path = next1['cycle']
+                    if walk_path[0] == next_path[-1]:
+                        next_path.pop()
+                        next_path.extend(walk_path)
+                        self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                                      'length': self.get_walk_length(next_path),
+                                                                      'count': len(next_path)}
+                        del self.__closed_walks[listLen - i - 1]
+                        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                        return True
+                    if self.is_in_edge_list([walk_path[0], next_path[-1]]):
+                        walk_path.append(next_path[-1])
+                        next_path.extend(walk_path)
+                        self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                                      'length': self.get_walk_length(next_path),
+                                                                      'count': len(next_path)}
+                        del self.__closed_walks[listLen - i - 1]
+                        self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                        return True
+
         return False
 
     def merge_round2(self):

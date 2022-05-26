@@ -21,14 +21,28 @@ class MyGraph:
 
         rand_edges = []
         parallel_edges = []
-        for x in range(0, number_of_edges):
-            value = random.sample(range(0, self.__g.vcount()), 2)
-            while value in rand_edges:
+        isOkey = True
+        while isOkey:
+            print("isOkey")
+            rand_edges = []
+            parallel_edges = []
+            degrees = [0] * number_of_vertex
+            for x in range(0, number_of_edges):
                 value = random.sample(range(0, self.__g.vcount()), 2)
-            temp_val = [value[1],value[0]]
-            if temp_val in rand_edges:
-                parallel_edges.append(temp_val)
-            rand_edges.append(value)
+                while value in rand_edges:
+                    value = random.sample(range(0, self.__g.vcount()), 2)
+                temp_val = [value[1], value[0]]
+                if temp_val in rand_edges:
+                    parallel_edges.append(temp_val)
+                else:
+                    for node in value:
+                        degrees[node] = degrees[node] + 1
+                rand_edges.append(value)
+            if 1 in degrees:
+                isOkey = True
+            else:
+                isOkey = False
+            print(degrees)
         """
         for x in range(0, number_of_vertex):
             if self.__g.degree(x) == 0:
@@ -69,14 +83,15 @@ class MyGraph:
         self.__g.es["curved"] = False
         return parallel_edges
 
-    def is_in(self,x,value,edges):
-        edge = [x,value]
+    def is_in(self, x, value, edges):
+        edge = [x, value]
         if edge in edges:
             return True
         edge.reverse()
         if edge in edges:
             return True
         return False
+
     def print_graph(self, graph_number):
         visual_style = {}
 
@@ -154,4 +169,3 @@ print(path[0])
 print(graph.get_edges())
 print(graph.get_shortest_path_length(path))
 """
-

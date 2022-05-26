@@ -18,7 +18,7 @@ class Ui_label_initial_vertex(object):
         self.__time1 = 0
         self.__time2 = 0
         res = self.__my_algo.generate_graph(int(self.txt_initial_vertex.text()), int(self.txt_numberof_node.text())
-                                            , int(self.txt_numberof_edge.text()), 13)
+                                            , int(self.txt_numberof_edge.text()),int(self.txt_k.text()), 13)
         self.__k = int(self.txt_k.text())
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
@@ -44,11 +44,14 @@ class Ui_label_initial_vertex(object):
         self.__time1 = res[1]
         self.time_heuristic.setText("{:.18f}".format(res[1]) + "s")
         cycles = res[0]
-        for e in cycles:
-            self.cycles_heuristic.insertPlainText(str(e)[1:-1] + "\n")
-        maxx = cycles[0]
-        lenth = maxx['length']
-        self.cycles_heuristic.insertPlainText("Maximum length: " + str(lenth) + "\n")
+        if len(cycles) > 0:
+            for e in cycles:
+                self.cycles_heuristic.insertPlainText(str(e)[1:-1] + "\n")
+            maxx = cycles[0]
+            lenth = maxx['length']
+            self.cycles_heuristic.insertPlainText("Maximum length: " + str(lenth) + "\n")
+        else:
+            self.cycles_heuristic.insertPlainText("There is no Result! \n")
         if self.__time1 > 0 and self.__time2 > 0:
             self.time_diff.setText("{:.20f}".format(self.__time2 - self.__time1) + "s")
 
@@ -58,13 +61,18 @@ class Ui_label_initial_vertex(object):
         self.__time2 = res[1]
         self.time_exhaustive.setText("{:.18f}".format(res[1]) + "s")
         cycles = res[0]
-        for e in cycles:
-            self.cycles_exhaustive.insertPlainText(str(e)[1:-1] + "\n")
-        maxx = cycles[0]
-        lenth = maxx['length']
-        self.cycles_exhaustive.insertPlainText("Maximum length: " + str(lenth) + "\n")
+        if len(cycles) > 0:
+            for e in cycles:
+                self.cycles_exhaustive.insertPlainText(str(e)[1:-1] + "\n")
+            maxx = cycles[0]
+            lenth = maxx['length']
+            self.cycles_exhaustive.insertPlainText("Maximum length: " + str(lenth) + "\n")
+        else:
+            self.cycles_exhaustive.insertPlainText("There is no Result! \n")
         if self.__time1 > 0 and self.__time2 > 0:
             self.time_diff.setText("{:.20f}".format(self.__time2 - self.__time1) + "s")
+
+
 
     def setupUi(self, label_initial_vertex):
         label_initial_vertex.setObjectName("label_initial_vertex")

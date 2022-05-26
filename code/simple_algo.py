@@ -24,6 +24,22 @@ class MySimpleAlgorithm:
         for edge in self.graph:
             for node in edge:
                 degrees[node] = degrees[node] + 1
+        i = 0
+        for e in degrees:
+            if e == 1:
+                adj = self.get_adj(i)
+                lst = [i, adj[0]]
+                if lst in self.graph:
+                    lst.reverse()
+                    self.graph.append(lst)
+                else:
+                    self.graph.append(lst)
+                print("1 degreee22")
+                print(lst)
+                print(self.graph)
+            i = i + 1
+        for edge in self.graph:
+            for node in edge:
                 self.findNewCycles([node])
         self.cycles = [x for x in self.cycles if not self.determine(x)]
         for cy in self.cycles:
@@ -38,10 +54,11 @@ class MySimpleAlgorithm:
         for e in degrees:
             if e == 1 and i != self.initial_vertex:
                 adj = self.get_adj(i)
-                lst = [i, adj[0], i]
-                print("1 degreee")
-                print(lst)
-                self.cycles.append(lst)
+                if self.initial_vertex in adj:
+                    lst = [i, self.initial_vertex, i]
+                    print("1 degreee")
+                    print(lst)
+                    self.cycles.append(lst)
             i = i + 1
 
         print(self.cycles)
