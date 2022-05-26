@@ -10,17 +10,68 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QMessageBox
+
+from main import *
+from simple_algo import *
 
 
 class Ui_label_initial_vertex(object):
+
+    def __init__(self):
+        self.__my_algo = MyAlgorithm()
+        self.__simple_algo = None
+        self.__closed_walks1 = []
+        self.__closed_walks2 = []
+        self.__time1 = 0
+        self.__time2 = 0
+        self.__k = 0
+
     def generate_graph_gui(self):
-        print(self.txt_k.text())
-        print(self.txt_initial_vertex.text())
-        print(self.txt_numberof_node.text())
-        print(self.txt_numberof_edge.text())
-        image = QPixmap("graph12.png")
-        self.graph_image.setPixmap(image)
+        res = self.__my_algo.generate_graph(int(self.txt_initial_vertex.text()), int(self.txt_numberof_node.text())
+                                            , int(self.txt_numberof_edge.text()), 13)
+        self.__k = int(self.txt_k.text())
+        msgBox = QMessageBox()
+        msgBox.setIcon(QMessageBox.Information)
+        msgBox.setText("Graph Generated Successfully!")
+        msgBox.setWindowTitle("Information")
+        msgBox.setStandardButtons(QMessageBox.Ok)
+        # msgBox.buttonClicked.connect(msgButtonClick)
+        print(res)
+
+        returnValue = msgBox.exec()
+        if returnValue == QMessageBox.Ok:
+            print('OK clicked')
+            image = QPixmap("outputs/demo13.png")
+            self.graph_image.setPixmap(image)
+            if len(res) < 1:
+                self.paralel_edges.setText("There is no parallel edge!")
+            else:
+                self.paralel_edges.setText(str(res)[1:-1])
+        # alg = MyAlgorithm()
+        # alg.generate_graph(s, n, e, i)
+        # alg.my_algorithm(4)
         # self.textEdit.setText("akif")
+
+    def run_heuristic(self):
+        res = self.__my_algo.my_algorithm(self.__k)
+        self.time_heuristic.setText("{:.18f}".format(res[1]) + "s")
+        cycles = res[0]
+        for e in cycles:
+            self.cycles_heuristic.insertPlainText(str(e) + "\n")
+        maxx = cycles[0]
+        lenth = maxx['length']
+        self.cycles_heuristic.insertPlainText("Maximum length: " + str(lenth) + "\n")
+
+    def run_exhaustive(self):
+        res = self.__my_algo.simple_algo()
+        self.time_exhaustive.setText("{:.18f}".format(res[1]) + "s")
+        cycles = res[0]
+        for e in cycles:
+            self.cycles_exhaustive.insertPlainText(str(e) + "\n")
+        maxx = cycles[0]
+        lenth = maxx['length']
+        self.cycles_exhaustive.insertPlainText("Maximum length: " + str(lenth) + "\n")
 
     def setupUi(self, label_initial_vertex):
         label_initial_vertex.setObjectName("label_initial_vertex")
@@ -116,6 +167,7 @@ class Ui_label_initial_vertex(object):
         self.btn_run_heuristic = QtWidgets.QPushButton(self.groupBox)
         self.btn_run_heuristic.setGeometry(QtCore.QRect(10, 50, 141, 41))
         self.btn_run_heuristic.setObjectName("btn_run_heuristic")
+        self.btn_run_heuristic.clicked.connect(lambda: self.run_heuristic())
         self.cycles_heuristic = QtWidgets.QTextEdit(self.groupBox)
         self.cycles_heuristic.setEnabled(True)
         self.cycles_heuristic.setGeometry(QtCore.QRect(10, 150, 431, 431))
@@ -160,6 +212,7 @@ class Ui_label_initial_vertex(object):
         self.btn_run_exhaustive = QtWidgets.QPushButton(self.groupBox_2)
         self.btn_run_exhaustive.setGeometry(QtCore.QRect(10, 50, 141, 41))
         self.btn_run_exhaustive.setObjectName("btn_run_exhaustive")
+        self.btn_run_exhaustive.clicked.connect(lambda: self.run_exhaustive())
         self.cycles_exhaustive = QtWidgets.QTextEdit(self.groupBox_2)
         self.cycles_exhaustive.setGeometry(QtCore.QRect(10, 150, 431, 437))
         self.cycles_exhaustive.setReadOnly(True)

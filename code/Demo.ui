@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>logo.jpg</normaloff>logo.jpg</iconset>
+    <normaloff>../gui/logo.jpg</normaloff>../gui/logo.jpg</iconset>
   </property>
   <property name="iconSize">
    <size>
@@ -109,7 +109,7 @@
      <rect>
       <x>230</x>
       <y>60</y>
-      <width>111</width>
+      <width>91</width>
       <height>21</height>
      </rect>
     </property>
@@ -129,7 +129,7 @@
      <rect>
       <x>10</x>
       <y>100</y>
-      <width>141</width>
+      <width>111</width>
       <height>21</height>
      </rect>
     </property>
@@ -175,7 +175,7 @@
      <rect>
       <x>10</x>
       <y>60</y>
-      <width>141</width>
+      <width>111</width>
       <height>21</height>
      </rect>
     </property>

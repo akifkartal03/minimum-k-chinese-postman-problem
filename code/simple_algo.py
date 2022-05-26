@@ -1,16 +1,7 @@
+
+
 # I didn't want to bother with global variables therefore,
 # I created a class to encapsulate my simple algorithm.
-
-# todo
-# cycle da initial vertex sayısı k dan az veya eşitşe kendin cycle eklee
-
-# simple algoritmada graph'ın cycle üretemediği durumları kontrol et ve cycler ekle...
-# kendi algoritmanda olduğu gibi
-# sonra test et ve biraz kendi alogritmanı toparla
-# özellikle k'dan fazla cycle üretme durumuna bidaha bak
-import itertools
-
-
 class MySimpleAlgorithm:
 
     def __init__(self, edges, init_vertex, k_value, node):

@@ -20,27 +20,26 @@ class MyAlgorithm:
         self.__k = 0
         self.__n = 0
 
-    def my_algorithm(self, s, k, n, i):
-        self.init_values1()
-        self.__initial_vertex = s
+    def my_algorithm(self, k):
         self.__k = k
-        self.__n = n
-        self.generate_graph(s, n, i)
-        print("graph generated")
+        start_time = time.perf_counter()
         self.sort_edges_descending()
         print("sorted edges:")
         print(self.__sorted_edges)
         self.create_closed_walk(k)
+        total_time = (time.perf_counter() - start_time)
         print("cycles:")
         print(self.__closed_walks)
-        self.simple_algo()
-        print("cycles2:")
-        print(self.__second_closed_walks)
+        print(total_time)
+        return [self.__closed_walks, total_time]
+        # self.simple_algo()
+        # print("cycles2:")
+        # print(self.__second_closed_walks)
 
-    def my_algorithm1(self, s, k, n, i, is_new,is_time):
+    def my_algorithm1(self, s, k, n,e, i, is_new, is_time):
         if is_new:
             self.init_values1()
-            self.generate_graph(s, n, i)
+            self.generate_graph(s, n,e, i)
             self.__initial_vertex = s
         else:
             self.init_values2()
@@ -64,10 +63,11 @@ class MyAlgorithm:
 
     def simple_algo(self):
         print("simple algo to compare")
-        smp = MySimpleAlgorithm(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k,self.__n)
+        start_time = time.perf_counter()
+        smp = MySimpleAlgorithm(self.__my_graph.get_edges(), self.__my_graph.get_initial_vertex(), self.__k, self.__n)
         found = smp.main()
-        #found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
-        #self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
+        # found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
+        # self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
         maxLen = sys.maxsize
         for e in found:
             lenList = []
@@ -79,8 +79,11 @@ class MyAlgorithm:
             tempmax = max(lenList)
             if tempmax < maxLen:
                 self.__second_closed_walks = simple_closed_walk
+                maxLen = tempmax
         if self.__second_closed_walks:
             self.__second_closed_walks = sorted(self.__second_closed_walks, key=itemgetter('length'), reverse=True)
+        total_time = (time.perf_counter() - start_time)
+        return [self.__second_closed_walks, total_time]
 
     def init_values1(self):
         self.__my_graph = None
@@ -100,14 +103,16 @@ class MyAlgorithm:
         self.__k = 0
         self.__second_closed_walks = None
 
-
-    def generate_graph(self, s, n, i):
+    def generate_graph(self, s, n, e, i):
+        self.init_values1()
+        self.__initial_vertex = s
+        self.__n = n
         graph = MyGraph()
-        res = graph.generate_random_graph(n, int((n * (n - 1)) / 2), s)
-        while res:
-            res = graph.generate_random_graph(n, int((n * (n - 1)) / 2), s)
+        res = graph.generate_random_graph(n, e, s)
         graph.print_graph(i)
         self.__my_graph = graph
+        print("graph generated")
+        return res
 
     def sort_edges_descending(self):
         weights = self.__my_graph.get_weights()
@@ -210,20 +215,20 @@ class MyAlgorithm:
             walk = e['cycle']
             if self.sub_list_exists(walk, edge):
                 return True
-            reverse_edge = [edge[1],edge[0]]
+            reverse_edge = [edge[1], edge[0]]
             if self.sub_list_exists(walk, reverse_edge):
                 return True
         return False
 
     def add_dummy_tours(self, missing_number):
         listLen = len(self.__sorted_edges)
-        k = 0
-        for i in range(listLen - 1):
+        for i in range(listLen):
             e = self.__sorted_edges[(listLen - i) - 1]
             walk = [e['end_node'], e['start_node'], e['end_node']]
-            self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
-            k = k + 1
-            if k == missing_number:
+            if self.__initial_vertex in walk:
+                for j in range(missing_number):
+                    self.__closed_walks.append(
+                        {'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
                 break
 
     def merge_tours(self, k):
@@ -264,9 +269,9 @@ class MyAlgorithm:
     def merge_round1(self):
         listLen = len(self.__closed_walks)
         for i in range(listLen):
-            sm_el = self.__closed_walks[listLen-i-1]
+            sm_el = self.__closed_walks[listLen - i - 1]
             walk_path = sm_el['cycle']
-            for j in range(i,listLen - 1):
+            for j in range(i, listLen - 1):
                 next1 = self.__closed_walks[(listLen - j - 1) - 1]
                 next_path = next1['cycle']
                 if walk_path[-1] == next_path[0]:
@@ -278,6 +283,7 @@ class MyAlgorithm:
                     del self.__closed_walks[listLen - 1]
                     self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
                     return True
+                
         return False
 
     def merge_round2(self):
@@ -454,6 +460,7 @@ graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
-#alg = MyAlgorithm()
-#alg.my_algorithm(0, 4, 6, 12)
+# alg = MyAlgorithm()
+# alg.generate_graph(s, n, e, i)
+# alg.my_algorithm(4)
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))

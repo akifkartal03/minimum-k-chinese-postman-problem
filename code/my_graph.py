@@ -20,10 +20,14 @@ class MyGraph:
             self.__g.vs[i]["label"] = i
 
         rand_edges = []
+        parallel_edges = []
         for x in range(0, number_of_edges):
             value = random.sample(range(0, self.__g.vcount()), 2)
             while value in rand_edges:
                 value = random.sample(range(0, self.__g.vcount()), 2)
+            temp_val = [value[1],value[0]]
+            if temp_val in rand_edges:
+                parallel_edges.append(temp_val)
             rand_edges.append(value)
         """
         for x in range(0, number_of_vertex):
@@ -53,6 +57,8 @@ class MyGraph:
             rand_edges.append(edge)
             self.__g.add_edge(index_min, value)
         """
+        print("edges:")
+        print(rand_edges)
         self.__g.add_edges(rand_edges)
         rand_weights = []
         for x in range(0, len(self.__g.get_edgelist())):
@@ -61,7 +67,7 @@ class MyGraph:
         self.__g.es['weight'] = rand_weights
         self.__g.es['label'] = rand_weights
         self.__g.es["curved"] = False
-        return False
+        return parallel_edges
 
     def is_in(self,x,value,edges):
         edge = [x,value]
@@ -74,7 +80,7 @@ class MyGraph:
     def print_graph(self, graph_number):
         visual_style = {}
 
-        out_name = "outputs/graph" + str(graph_number) + ".png"
+        out_name = "outputs/demo" + str(graph_number) + ".png"
 
         visual_style["bbox"] = (400, 400)
         visual_style["margin"] = 27
