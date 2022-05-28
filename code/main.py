@@ -39,7 +39,7 @@ class MyAlgorithm:
     def my_algorithm1(self, s, k, n, e, i, is_new, is_time):
         if is_new:
             self.init_values1()
-            self.generate_graph(s, n, e,k, i)
+            self.generate_graph(s, n, e, k, i)
             self.__initial_vertex = s
         else:
             self.init_values2()
@@ -70,7 +70,7 @@ class MyAlgorithm:
         found = smp.main()
         # found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
         # self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
-        maxLen = sys.maxsize
+        minLen = sys.maxsize
         for e in found:
             lenList = []
             simple_closed_walk = []
@@ -79,9 +79,9 @@ class MyAlgorithm:
                 lenList.append(len1)
                 simple_closed_walk.append({'cycle': walk, 'length': len1, 'count': len(walk)})
             tempmax = max(lenList)
-            if tempmax < maxLen:
+            if tempmax < minLen:
                 self.__second_closed_walks = simple_closed_walk
-                maxLen = tempmax
+                minLen = tempmax
         if self.__second_closed_walks:
             self.__second_closed_walks = sorted(self.__second_closed_walks, key=itemgetter('length'), reverse=True)
         total_time = (time.perf_counter() - start_time)
@@ -106,14 +106,14 @@ class MyAlgorithm:
         self.__k = 0
         self.__second_closed_walks = None
 
-    def generate_graph(self, s, n, e,k, i):
+    def generate_graph(self, s, n, e, k, i):
         self.init_values1()
         self.__initial_vertex = s
         self.__n = n
         self.__k = k
         graph = MyGraph()
         res = graph.generate_random_graph(n, e, s)
-        graph.print_graph(i)
+        #graph.print_graph(i)
         self.__my_graph = graph
         print("graph generated")
         return res
@@ -318,7 +318,7 @@ class MyAlgorithm:
                         self.__closed_walks[(listLen - (j - 1) - 1) - 1] = {'cycle': next_path2,
                                                                             'length': self.get_walk_length(next_path2),
                                                                             'count': len(next_path2)}
-                        del self.__closed_walks[listLen - (i+1) - 1]
+                        del self.__closed_walks[listLen - (i + 1) - 1]
                         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
                         return True
                 if j > 1:

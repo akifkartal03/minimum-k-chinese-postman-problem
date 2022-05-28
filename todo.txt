@@ -1,0 +1,21 @@
+bitirme todo:
+
+1) complexity analizleri bitir
+
+
+Test case'leri:
+- time measuring node count ve edge count değiştirilerek densitiy
+- node count ve edge count'dan birini sabit tutp diğerini değişimeine bak.
+- maximum length measuring parametleri değiştirerek
+
+2) parametlerin her birini değiştirip bir analiz yap
+	- hangi şartlar daha iyi çalışıyor gibi yorumlamamız gerekiyor
+	- nedenini açıkla
+	- 100 tane random generate et
+	- 5 vertex için 50 şer tane farklı grapf üzerinde bunların ortalamasını alıp 
+		burda böyle bir sonuç veriyor diye grafikde bunu göstermemiz gerekiyor
+	-stress testing gibi olabilir
+
+3) comparasion belli data sizelarında exhaustive search ile karşılaştırma
+	- artı yorumlama gerekiyor.
+	

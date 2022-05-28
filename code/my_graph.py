@@ -38,11 +38,17 @@ class MyGraph:
                     for node in value:
                         degrees[node] = degrees[node] + 1
                 rand_edges.append(value)
-            if 1 in degrees:
-                isOkey = True
-            else:
-                isOkey = False
+            #if 1 in degrees:
+                #isOkey = True
+                #else:
+                #isOkey = False
+            isOkey = False
             print(degrees)
+        for i in range(len(parallel_edges)):
+            value = random.sample(range(0, self.__g.vcount()), 2)
+            while self.is_in(value,rand_edges):
+                value = random.sample(range(0, self.__g.vcount()), 2)
+            rand_edges.append(value)
         """
         for x in range(0, number_of_vertex):
             if self.__g.degree(x) == 0:
@@ -73,6 +79,7 @@ class MyGraph:
         """
         print("edges:")
         print(rand_edges)
+        print(len(rand_edges))
         self.__g.add_edges(rand_edges)
         rand_weights = []
         for x in range(0, len(self.__g.get_edgelist())):
@@ -83,12 +90,11 @@ class MyGraph:
         self.__g.es["curved"] = False
         return parallel_edges
 
-    def is_in(self, x, value, edges):
-        edge = [x, value]
-        if edge in edges:
+    def is_in(self, value, edges):
+        if value in edges:
             return True
-        edge.reverse()
-        if edge in edges:
+        temp_val = [value[1], value[0]]
+        if temp_val in edges:
             return True
         return False
 
