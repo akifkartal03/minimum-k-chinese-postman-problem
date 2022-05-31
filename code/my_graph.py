@@ -9,6 +9,9 @@ class MyGraph:
     def __init__(self):
         self.__g = None
         self.__initial_vertex = 0
+        self.__r_edges = []
+        self.__is1degree = False
+        self.__degree1 = []
 
     def generate_random_graph(self, number_of_vertex, number_of_edges, initial_vertex):
         self.__initial_vertex = initial_vertex
@@ -22,11 +25,11 @@ class MyGraph:
         rand_edges = []
         parallel_edges = []
         isOkey = True
+        degrees = [0] * number_of_vertex
         while isOkey:
             print("isOkey")
             rand_edges = []
             parallel_edges = []
-            degrees = [0] * number_of_vertex
             for x in range(0, number_of_edges):
                 value = random.sample(range(0, self.__g.vcount()), 2)
                 while value in rand_edges:
@@ -38,48 +41,21 @@ class MyGraph:
                     for node in value:
                         degrees[node] = degrees[node] + 1
                 rand_edges.append(value)
-            #if 1 in degrees:
-                #isOkey = True
-                #else:
-                #isOkey = False
-            isOkey = False
+            if degrees[initial_vertex] == 0:
+                isOkey = True
+            else:
+                isOkey = False
             print(degrees)
         for i in range(len(parallel_edges)):
             value = random.sample(range(0, self.__g.vcount()), 2)
-            while self.is_in(value,rand_edges):
+            while self.is_in(value, rand_edges):
                 value = random.sample(range(0, self.__g.vcount()), 2)
             rand_edges.append(value)
-        """
-        for x in range(0, number_of_vertex):
-            if self.__g.degree(x) == 0:
-                return True
-            if self.__g.degree(x) == 1:
-                print("akif")
-                print(self.__g.degree(x))
-                print(x)
-                value = random.randint(0, number_of_vertex)
-                while value == x or self.is_in(x, value, rand_edges):
-                    value = random.randint(0, number_of_vertex)
-                edge = [x, value]
-                rand_edges.append(edge)
-                self.__g.add_edge(x,value)
-                degrees.append(self.__g.degree(x) + 1)
-            else:
-                degrees.append(self.__g.degree(x))
 
-        if all(x % 2 == 0 for x in degrees):
-            print("all oddd")
-            index_min = min(range(len(degrees)), key=degrees.__getitem__)
-            value = random.randint(0, number_of_vertex)
-            while value == index_min or self.is_in(index_min, value, rand_edges):
-                value = random.randint(0, number_of_vertex)
-            edge = [index_min, value]
-            rand_edges.append(edge)
-            self.__g.add_edge(index_min, value)
-        """
         print("edges:")
         print(rand_edges)
         print(len(rand_edges))
+        self.__r_edges = rand_edges
         self.__g.add_edges(rand_edges)
         rand_weights = []
         for x in range(0, len(self.__g.get_edgelist())):
@@ -88,7 +64,32 @@ class MyGraph:
         self.__g.es['weight'] = rand_weights
         self.__g.es['label'] = rand_weights
         self.__g.es["curved"] = False
+        degrees2 = [0] * number_of_vertex
+        for i in range(number_of_vertex):
+            degrees2[i] = self.__g.degree(i)
+            if degrees2[i] == 1:
+                self.__is1degree = True
+                graf = self.get_edges()
+                adj = self.get_adj(i,graf)
+                lst = (i, adj[0])
+                lst2 = [i, adj[0]]
+                if lst in graf:
+                    self.__degree1.append(lst2)
+                else:
+                    lst2.reverse()
+                    self.__degree1.append(lst2)
+        print("degre2")
+        print(degrees2)
         return parallel_edges
+
+    def get_adj(self, node, graf):
+        new_edges = []
+        for edge in graf:
+            if node in edge:
+                temp = [edge[0], edge[1]]
+                temp.remove(node)
+                new_edges.append(temp[0])
+        return new_edges
 
     def is_in(self, value, edges):
         if value in edges:
@@ -121,6 +122,15 @@ class MyGraph:
 
     def get_edges(self):
         return self.__g.get_edgelist()
+
+    def get_edges2(self):
+        return self.__r_edges
+
+    def get_is1Degree(self):
+        return self.__is1degree
+
+    def get_degree1(self):
+        return self.__degree1
 
     def get_initial_vertex(self):
         return self.__initial_vertex

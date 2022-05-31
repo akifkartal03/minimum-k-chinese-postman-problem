@@ -4,12 +4,11 @@
 # I created a class to encapsulate my simple algorithm.
 class MySimpleAlgorithm:
 
-    def __init__(self, edges, init_vertex, k_value, node):
+    def __init__(self, edges, init_vertex, k_value, node,cyc):
         self.graph = [list(elem) for elem in edges]
-        # elf.graph = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [1, 5], [2, 3], [2, 5], [4, 5]]
-        self.cycles = []
+        # self.graph = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [1, 5], [2, 3], [2, 5], [4, 5]]
+        self.cycles = cyc
         self.found = []
-
         self.initial_vertex = init_vertex
         self.k = k_value
         self.n = node
@@ -17,56 +16,27 @@ class MySimpleAlgorithm:
     def main(self):
         print(self.k)
         print(self.initial_vertex)
-        degrees = [0] * self.n
 
         print(self.graph)
         print(len(self.graph))
-        for edge in self.graph:
-            for node in edge:
-                degrees[node] = degrees[node] + 1
-        i = 0
-        for e in degrees:
-            if e == 1:
-                adj = self.get_adj(i)
-                lst = [i, adj[0]]
-                if lst in self.graph:
-                    lst.reverse()
-                    self.graph.append(lst)
-                else:
-                    self.graph.append(lst)
-                print("1 degreee22")
-                print(lst)
-                print(self.graph)
-            i = i + 1
+        print(self.cycles)
+        start = len(self.cycles)
+
         for edge in self.graph:
             for node in edge:
                 self.findNewCycles([node])
         self.cycles = [x for x in self.cycles if not self.determine(x)]
-        for cy in self.cycles:
-            cy.append(cy[0])
+        for i in range(start,len(self.cycles)):
+            cyc = self.cycles[i]
+            cyc.append(cyc[0])
 
-        if len(self.cycles) <= self.k or degrees[self.initial_vertex] == 1:
+        if len(self.cycles) <= self.k:
             adj = self.get_adj(self.initial_vertex)
             for e in adj:
                 lst = [self.initial_vertex, e, self.initial_vertex]
                 self.cycles.append(lst)
-        i = 0
-        for e in degrees:
-            if e == 1 and i != self.initial_vertex:
-                adj = self.get_adj(i)
-                if self.initial_vertex in adj:
-                    lst = [i, self.initial_vertex, i]
-                    print("1 degreee")
-                    print(lst)
-                    self.cycles.append(lst)
-            i = i + 1
 
         print(self.cycles)
-        # allPossibilities = list(itertools.combinations(self.cycles, self.k))
-        #allPossibilities = list(itertools.combinations(self.cycles, self.k))
-        # print(allPossibilities)
-        #for a in allPossibilities:
-            #self.findMatch(a)
         self.findCombinations(self.cycles,self.k)
         return self.found
 
