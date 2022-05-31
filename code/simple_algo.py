@@ -36,7 +36,7 @@ class MySimpleAlgorithm:
                 lst = [self.initial_vertex, e, self.initial_vertex]
                 self.cycles.append(lst)
 
-        print(self.cycles)
+        print(len(self.cycles))
         self.findCombinations(self.cycles,self.k)
         return self.found
 

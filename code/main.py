@@ -89,6 +89,7 @@ class MyAlgorithm:
         if self.__second_closed_walks:
             self.__second_closed_walks = sorted(self.__second_closed_walks, key=itemgetter('length'), reverse=True)
         total_time = (time.perf_counter() - start_time)
+        print(total_time)
         print("simple finishh")
         print(self.__second_closed_walks)
         return [self.__second_closed_walks, total_time]
@@ -277,6 +278,23 @@ class MyAlgorithm:
 
     def merge_round1(self):
         listLen = len(self.__closed_walks)
+        """
+        for i in range(listLen):
+            sm_el = self.__closed_walks[listLen - i - 1]
+            walk_path = sm_el['cycle']
+            for j in range(i, listLen - 1):
+                next1 = self.__closed_walks[(listLen - j - 1) - 1]
+                next_path = next1['cycle']
+                if walk_path[-1] == next_path[0]:
+                    next_path.pop()
+                    next_path.extend(walk_path)
+                    self.__closed_walks[(listLen - j - 1) - 1] = {'cycle': next_path,
+                                                                  'length': self.get_walk_length(next_path),
+                                                                  'count': len(next_path)}
+                    del self.__closed_walks[listLen - i - 1]
+                    self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
+                    return True
+        """
         breakk = False
         for i in range(listLen):
             sm_el = self.__closed_walks[listLen - i - 1]
@@ -350,6 +368,7 @@ class MyAlgorithm:
 
         return False
 
+
     def merge_round2(self):
         listLen = len(self.__closed_walks)
         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('count'))
@@ -375,6 +394,7 @@ class MyAlgorithm:
                             big_ok = False
                 if big_ok:
                     del self.__closed_walks[i]
+                    self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
                     return True
         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         return False
