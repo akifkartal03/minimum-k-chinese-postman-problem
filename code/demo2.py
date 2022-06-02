@@ -40,37 +40,43 @@ class Ui_label_initial_vertex(object):
 
     def run_heuristic(self):
         self.__time1 = 0
-        res = self.__my_algo.my_algorithm(self.__k)
+        res = self.__my_algo.my_algorithm(int(self.txt_k.text()))
         self.__time1 = res[1]
-        self.time_heuristic.setText("{:.18f}".format(res[1]) + "s")
+        self.time_heuristic.setText("{:.10f}".format(res[1]) + " Second")
         cycles = res[0]
         if len(cycles) > 0:
             for e in cycles:
-                self.cycles_heuristic.insertPlainText(str(e)[1:-1] + "\n")
+                self.cycles_heuristic.append(str(e)[1:-1])
             maxx = cycles[0]
             lenth = maxx['length']
-            self.cycles_heuristic.insertPlainText("Maximum length: " + str(lenth) + "\n")
+            self.cycles_heuristic.append("Maximum length: " + str(lenth) + "\n")
         else:
-            self.cycles_heuristic.insertPlainText("There is no Result! \n")
+            self.cycles_heuristic.append("There is no Result!")
         if self.__time1 > 0 and self.__time2 > 0:
-            self.time_diff.setText("{:.20f}".format(self.__time2 - self.__time1) + "s")
+            if self.__time2 - self.__time1 < 1:
+                self.time_diff.setText("{:.10f}".format((self.__time2 - self.__time1) * 1000) + " Millisecond")
+            else:
+                self.time_diff.setText("{:.10f}".format(self.__time2 - self.__time1) + "Second")
 
     def run_exhaustive(self):
         self.__time2 = 0
-        res = self.__my_algo.simple_algo()
+        res = self.__my_algo.simple_algo(int(self.txt_k.text()))
         self.__time2 = res[1]
-        self.time_exhaustive.setText("{:.18f}".format(res[1]) + "s")
+        self.time_exhaustive.setText("{:.10f}".format(res[1]) + " Second")
         cycles = res[0]
         if len(cycles) > 0:
             for e in cycles:
-                self.cycles_exhaustive.insertPlainText(str(e)[1:-1] + "\n")
+                self.cycles_exhaustive.append(str(e)[1:-1])
             maxx = cycles[0]
             lenth = maxx['length']
-            self.cycles_exhaustive.insertPlainText("Maximum length: " + str(lenth) + "\n")
+            self.cycles_exhaustive.append("Maximum length: " + str(lenth) + "\n")
         else:
-            self.cycles_exhaustive.insertPlainText("There is no Result! \n")
+            self.cycles_exhaustive.append("There is no Result!")
         if self.__time1 > 0 and self.__time2 > 0:
-            self.time_diff.setText("{:.20f}".format(self.__time2 - self.__time1) + "s")
+            if self.__time2 - self.__time1 < 1:
+                self.time_diff.setText("{:.10f}".format((self.__time2 - self.__time1)*1000) + " Millisecond")
+            else:
+                self.time_diff.setText("{:.10f}".format(self.__time2 - self.__time1) + " Second")
 
 
 
