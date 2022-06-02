@@ -89,7 +89,7 @@ class MyChartDraw:
         for i in range(20):
             self.algo.generate_graph(s, n, e, k, i)
             res = self.algo.my_algorithm(k)
-            res2 = self.algo.simple_algo()
+            res2 = self.algo.simple_algo(k)
             cycles = res[0]
             cycles2 = res2[0]
             self.time1_sum = self.time1_sum + res[1]
@@ -206,8 +206,8 @@ class MyChartDraw:
 
 plot = MyChartDraw()
 
-plot.chart1_time_vs_n()
-plot.chart1_time_vs_max()
+#plot.chart1_time_vs_n()
+#plot.chart1_time_vs_max()
 #plot.chart2_time_vs_edge()
 #plot.chart2_max_vs_edge()
 #plot.chart3_time_vs_k()

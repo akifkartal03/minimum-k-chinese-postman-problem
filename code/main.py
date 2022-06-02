@@ -22,6 +22,7 @@ class MyAlgorithm:
 
     def my_algorithm(self, k):
         self.__k = k
+        self.init_values2()
         start_time = time.perf_counter()
         self.sort_edges_descending()
         print("sorted edges:")
@@ -36,33 +37,10 @@ class MyAlgorithm:
         # print("cycles2:")
         # print(self.__second_closed_walks)
 
-    def my_algorithm1(self, s, k, n, e, i, is_new, is_time):
-        if is_new:
-            self.init_values1()
-            self.generate_graph(s, n, e, k, i)
-            self.__initial_vertex = s
-        else:
-            self.init_values2()
-        self.__k = k
-        self.__n = n
-        self.__initial_vertex = s
-        print("graph generated")
-        start_time = time.perf_counter()
-        self.sort_edges_descending()
-        print("sorted edges:")
-        print(self.__sorted_edges)
-        self.create_closed_walk(k)
-        total_time = (time.perf_counter() - start_time)
-        print("cycles:")
-        print(self.__closed_walks)
-        if is_time:
-            return total_time
-        else:
-            e = self.__closed_walks[0]
-            return e['length']
-
-    def simple_algo(self):
+    def simple_algo(self,k):
         print("simple algo to compare")
+        self.__k = k
+        self.init_values2()
         start_time = time.perf_counter()
         if len(self.__sorted_edges) < 1:
             self.sort_edges_descending()
@@ -108,8 +86,6 @@ class MyAlgorithm:
         self.__sorted_edges = []
         self.__closed_walks = []
         self.__walks_lengths = []
-        self.__initial_vertex = 0
-        self.__k = 0
         self.__second_closed_walks = []
 
     def generate_graph(self, s, n, e, k, i):
@@ -119,7 +95,7 @@ class MyAlgorithm:
         self.__k = k
         graph = MyGraph()
         res = graph.generate_random_graph(n, e, s)
-        #graph.print_graph(i)
+        graph.print_graph(i)
         self.__my_graph = graph
         print("graph generated")
         return res

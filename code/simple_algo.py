@@ -30,7 +30,7 @@ class MySimpleAlgorithm:
             cyc = self.cycles[i]
             cyc.append(cyc[0])
 
-        if len(self.cycles) <= self.k:
+        while len(self.cycles) <= self.k:
             adj = self.get_adj(self.initial_vertex)
             for e in adj:
                 lst = [self.initial_vertex, e, self.initial_vertex]
