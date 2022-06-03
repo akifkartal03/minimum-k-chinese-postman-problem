@@ -111,10 +111,10 @@ class MyChartDraw:
         print("missing")
         print(missing)
 
-        self.time1_x.append(n)
-        self.max1_x.append(n)
-        self.time2_x.append(n)
-        self.max2_x.append(n)
+        self.time1_x.append(k)
+        self.max1_x.append(k)
+        self.time2_x.append(k)
+        self.max2_x.append(k)
 
         self.time1_y.append(self.time1_avg)
         self.max1_y.append(self.max1_avg)
@@ -200,18 +200,78 @@ class MyChartDraw:
         # n = 6
         # s = 0
         print("chart4")
-        self.print_chart("number of k value", "Maximum length",
+        self.print_chart("k value", "Maximum length",
                          "Maximum length with respect to k value", self.max1_x, self.max1_y, self.max2_x,
                          self.max2_y, "charts/max.png")
 
-plot = MyChartDraw()
+    def time_max_vs_n_heuristic(self, n, k, s, e):
+        self.init_values1()
+        for i in range(50):
+            self.algo.generate_graph(s, n, e, k, i)
+            res = self.algo.simple_algo(k)
+            self.time1_sum = self.time1_sum + res[1]
+            cycles = res[0]
+            if len(cycles) == 0:
+                print("missing")
 
-#plot.chart1_time_vs_n()
-#plot.chart1_time_vs_max()
-#plot.chart2_time_vs_edge()
-#plot.chart2_max_vs_edge()
-#plot.chart3_time_vs_k()
-#plot.chart3_max_vs_k()
+        self.time1_avg = self.time1_sum / 50.0
+        self.time1_x.append(n)
+        self.time1_y.append(self.time1_avg)
+
+    def chart5_time_vs_n(self):
+        # k ve edge count sabit n değişiyor
+        # n = 4 ile 9 arasında
+        # k = 3
+        # edge = 6 , 9 ,11 ,13 ,15 şeklinde değişiyor
+        # s = 0
+        print("chart5")
+        self.init_values2()
+        for i in range(4, 7):
+            if i == 4:
+                edge = int((i * (i - 1)) / 2) - 1 #5
+                k = 3
+            elif i == 5:
+                edge = int((i * (i - 1)) / 2) - 2 # 8
+                k = 5
+            elif i == 6:
+                edge = int((i * (i - 1)) / 2) - 5 # 10
+                k = 7
+            else:
+                edge = 5
+                k = 4
+            self.time_max_vs_n_heuristic(i, k, 0, edge)
+        self.print_chart2("number of vertices", "Running Time(s)",
+                          "Running time with respect to number of vertices", self.time1_x, self.time1_y)
+
+    def print_chart2(self, xlabel, ylabel, title, x1, y1):
+        print("chart is printing...")
+        print(x1)
+        print(y1)
+
+        x1i = list(range(len(x1)))
+
+        # plotting the points
+        plt.plot(x1i, y1, color='green', label="exhausted search", linestyle='dashed',
+                 marker='o', markerfacecolor='green')
+
+        plt.xlabel(xlabel)
+        plt.ylabel(ylabel)
+
+        plt.xticks(x1i, x1)
+        plt.title(title)
+
+        plt.legend()
+        plt.show()
+
+
+plot = MyChartDraw()
+plot.chart3_time_vs_k()
+# plot.chart1_time_vs_n()
+# plot.chart1_time_vs_max()
+# plot.chart2_time_vs_edge()
+# plot.chart2_max_vs_edge()
+# plot.chart3_time_vs_k()
+# plot.chart3_max_vs_k()
 
 """
 x1 = [4, 5, 6, 7, 8]
