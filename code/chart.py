@@ -111,10 +111,10 @@ class MyChartDraw:
         print("missing")
         print(missing)
 
-        self.time1_x.append(k)
-        self.max1_x.append(k)
-        self.time2_x.append(k)
-        self.max2_x.append(k)
+        self.time1_x.append(e)
+        self.max1_x.append(e)
+        self.time2_x.append(e)
+        self.max2_x.append(e)
 
         self.time1_y.append(self.time1_avg)
         self.max1_y.append(self.max1_avg)
@@ -265,8 +265,8 @@ class MyChartDraw:
 
 
 plot = MyChartDraw()
-plot.chart3_time_vs_k()
-# plot.chart1_time_vs_n()
+plot.chart2_time_vs_edge()
+plot.chart2_max_vs_edge()
 # plot.chart1_time_vs_max()
 # plot.chart2_time_vs_edge()
 # plot.chart2_max_vs_edge()
