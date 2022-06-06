@@ -111,10 +111,10 @@ class MyChartDraw:
         print("missing")
         print(missing)
 
-        self.time1_x.append(e)
-        self.max1_x.append(e)
-        self.time2_x.append(e)
-        self.max2_x.append(e)
+        self.time1_x.append(k)
+        self.max1_x.append(k)
+        self.time2_x.append(k)
+        self.max2_x.append(k)
 
         self.time1_y.append(self.time1_avg)
         self.max1_y.append(self.max1_avg)
@@ -188,7 +188,7 @@ class MyChartDraw:
         print("chart1")
         self.init_values2()
         for i in range(4, 9):
-            self.time_max_vs_n(6, i, 0, 10)
+            self.time_max_vs_n(6, i+1, 0, 10)
         self.print_chart("k value", "Running Time(s)",
                          "Running time with respect to k value", self.time1_x, self.time1_y, self.time2_x,
                          self.time2_y, "charts/time.png")
@@ -208,11 +208,8 @@ class MyChartDraw:
         self.init_values1()
         for i in range(50):
             self.algo.generate_graph(s, n, e, k, i)
-            res = self.algo.simple_algo(k)
+            res = self.algo.my_algorithm(k)
             self.time1_sum = self.time1_sum + res[1]
-            cycles = res[0]
-            if len(cycles) == 0:
-                print("missing")
 
         self.time1_avg = self.time1_sum / 50.0
         self.time1_x.append(n)
@@ -226,7 +223,10 @@ class MyChartDraw:
         # s = 0
         print("chart5")
         self.init_values2()
-        for i in range(4, 7):
+        for i in range(8, 17,2):
+            edge = int((i * (i - 1)) / 2) - 5
+            k= i *5
+            """
             if i == 4:
                 edge = int((i * (i - 1)) / 2) - 1 #5
                 k = 3
@@ -239,6 +239,7 @@ class MyChartDraw:
             else:
                 edge = 5
                 k = 4
+            """
             self.time_max_vs_n_heuristic(i, k, 0, edge)
         self.print_chart2("number of vertices", "Running Time(s)",
                           "Running time with respect to number of vertices", self.time1_x, self.time1_y)
@@ -265,13 +266,13 @@ class MyChartDraw:
 
 
 plot = MyChartDraw()
-plot.chart2_time_vs_edge()
-plot.chart2_max_vs_edge()
+#plot.chart2_time_vs_edge()
+#plot.chart2_max_vs_edge()
 # plot.chart1_time_vs_max()
 # plot.chart2_time_vs_edge()
 # plot.chart2_max_vs_edge()
-# plot.chart3_time_vs_k()
-# plot.chart3_max_vs_k()
+#plot.chart3_time_vs_k()
+plot.chart5_time_vs_n()
 
 """
 x1 = [4, 5, 6, 7, 8]
