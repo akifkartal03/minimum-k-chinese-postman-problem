@@ -48,8 +48,7 @@ class MyAlgorithm:
         if self.__my_graph.get_is1Degree():
             edges = self.__my_graph.get_degree1()
             cycles = self.generate_cycles(edges)
-        smp = MySimpleAlgorithm(self.__my_graph.get_edges(), self.__my_graph.get_initial_vertex(), self.__k, self.__n,
-                                cycles)
+        smp = MySimpleAlgorithm(self.__my_graph.get_edges(), self.__my_graph.get_initial_vertex(), self.__k, self.__n,cycles)
         found = smp.main()
 
         minLen = sys.maxsize
