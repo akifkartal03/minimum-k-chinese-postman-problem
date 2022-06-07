@@ -1,10 +1,8 @@
-
-
 # I didn't want to bother with global variables therefore,
 # I created a class to encapsulate my simple algorithm.
 class MySimpleAlgorithm:
 
-    def __init__(self, edges, init_vertex, k_value, node,cyc):
+    def __init__(self, edges, init_vertex, k_value, node, cyc):
         self.graph = [list(elem) for elem in edges]
         # self.graph = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [1, 5], [2, 3], [2, 5], [4, 5]]
         self.cycles = cyc
@@ -25,8 +23,9 @@ class MySimpleAlgorithm:
         for edge in self.graph:
             for node in edge:
                 self.findNewCycles([node])
+
         self.cycles = [x for x in self.cycles if not self.determine(x)]
-        for i in range(start,len(self.cycles)):
+        for i in range(start, len(self.cycles)):
             cyc = self.cycles[i]
             cyc.append(cyc[0])
 
@@ -37,7 +36,7 @@ class MySimpleAlgorithm:
                 self.cycles.append(lst)
 
         print(len(self.cycles))
-        self.findCombinations(self.cycles,self.k)
+        self.findCombinations(self.cycles, self.k)
         return self.found
 
     def determine(self, cylce):
@@ -120,13 +119,13 @@ class MySimpleAlgorithm:
         return rates
 
     def findMatch(self, cycle):
-        if self.checkInitialVertex(cycle):
+        if self.checkConditions(cycle):
             self.found.append(cycle)
             return True
         else:
             return False
 
-    def checkInitialVertex(self, cycle):
+    def checkConditions(self, cycle):
         lst = [0] * len(self.graph)
         for e in cycle:
             i = 0
@@ -159,7 +158,7 @@ class MySimpleAlgorithm:
 
         # base case: combination size is `k`
         if k == 0:
-            #print(out)
+            # check problem conditions
             self.findMatch(out)
             return
 

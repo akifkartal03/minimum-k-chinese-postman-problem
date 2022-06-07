@@ -37,7 +37,7 @@ class MyAlgorithm:
         # print("cycles2:")
         # print(self.__second_closed_walks)
 
-    def simple_algo(self,k):
+    def simple_algo(self, k):
         print("simple algo to compare")
         self.__k = k
         self.init_values2()
@@ -48,10 +48,10 @@ class MyAlgorithm:
         if self.__my_graph.get_is1Degree():
             edges = self.__my_graph.get_degree1()
             cycles = self.generate_cycles(edges)
-        smp = MySimpleAlgorithm(self.__my_graph.get_edges(), self.__my_graph.get_initial_vertex(), self.__k, self.__n,cycles)
+        smp = MySimpleAlgorithm(self.__my_graph.get_edges(), self.__my_graph.get_initial_vertex(), self.__k, self.__n,
+                                cycles)
         found = smp.main()
-        # found = main(self.__my_graph.get_edges(),self.__my_graph.get_initial_vertex(),self.__k)
-        # self.__closed_walks.append({'cycle': walk, 'length': self.get_walk_length(walk), 'count': len(walk)})
+
         minLen = sys.maxsize
         for e in found:
             lenList = []
@@ -105,7 +105,6 @@ class MyAlgorithm:
         edges = self.__my_graph.get_edges()
         self.__edges = edges
         n = len(weights)
-        print(edges)
         for i in range(n):
             for j in range(0, n - i - 1):
                 if weights[j] < weights[j + 1]:
@@ -139,7 +138,7 @@ class MyAlgorithm:
         return False
 
     def create_closed_walk(self, k):
-        print(self.__sorted_edges)
+        # for each edge
         for e in self.__sorted_edges:
 
             # e = {vi, vj}
@@ -157,11 +156,9 @@ class MyAlgorithm:
                     self.add_edge_to_walk(walk, path3)
                 # try to create closed walk
                 elif self.try_to_merge(path1, path3, walk):
-                    # path2 ile birleştirmeye çalış
                     self.add_edge_to_walk(walk, path2)
                 # try to create closed walk
                 elif self.try_to_merge(path2, path3, walk):
-                    # path1 ile birleştirmeye çalış
                     self.add_edge_to_walk(walk, path1)
                 else:
                     walk.extend(self.get_maximum(path1, path2, path3))
@@ -174,11 +171,9 @@ class MyAlgorithm:
         self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         print(self.__closed_walks)
         if len(self.__closed_walks) < k:
-            print("k-m multigraf")
             self.add_dummy_tours(k - len(self.__closed_walks))
             self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         elif len(self.__closed_walks) > k:
-            print("buyuk")
             self.merge_tours(k)
             self.__closed_walks = sorted(self.__closed_walks, key=itemgetter('length'), reverse=True)
         print("len")
@@ -220,10 +215,8 @@ class MyAlgorithm:
     def merge_tours(self, k):
         listLen = len(self.__closed_walks)
         n = listLen - k
-        print(n)
         is_ok = False
         for i in range(n):
-            listLen = len(self.__closed_walks)
             if i == 0:
                 if self.merge_round2():
                     print("round2")
@@ -343,7 +336,6 @@ class MyAlgorithm:
                         return True
 
         return False
-
 
     def merge_round2(self):
         listLen = len(self.__closed_walks)
@@ -514,7 +506,7 @@ class MyAlgorithm:
             print("walk is empty")
             return 0
 
-    def generate_cycles(self,edges):
+    def generate_cycles(self, edges):
         print("generate")
         print(edges)
         cycles = []
@@ -544,14 +536,15 @@ class MyAlgorithm:
                 cycles.append(walk)
         return cycles
 
+
 """
 graph = MyGraph()
 graph.generate_random_graph(5, 10, 0)
 graph.print_graph(4)
 """
-#alg = MyAlgorithm()
-#alg.generate_graph(0,6,10,4,16)
-#alg.my_algorithm(4)
-#alg.simple_algo()
+# alg = MyAlgorithm()
+# alg.generate_graph(0,6,10,4,16)
+# alg.my_algorithm(4)
+# alg.simple_algo()
 
 # print(alg.check_include([4, 3, 1, 0], [3, 4]))
