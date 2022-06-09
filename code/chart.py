@@ -272,26 +272,6 @@ plot = MyChartDraw()
 # plot.chart2_time_vs_edge()
 # plot.chart2_max_vs_edge()
 #plot.chart3_time_vs_k()
-plot.chart5_time_vs_n()
+#plot.chart5_time_vs_n()
 
-"""
-x1 = [4, 5, 6, 7, 8]
-y1 = [0.0015796799999999943, 0.0011379750000000133, 0.0005795699999999515, 0.0010612999999999983, 0.001512065000000362]
 
-x2 = [4, 5, 6, 7, 8]
-y2 = [0.00360313000000001, 0.008309474999999988, 0.04434918499999998, 0.48101402999999976, 5.51165613]
-
-x3 = [4, 5, 6, 7, 8]
-y3 = [113.54545454545455, 103.22222222222223, 118.25, 148.94736842105263, 161.45]
-
-x4 = [4, 5, 6, 7, 8]
-y4 = [116.36363636363636, 103.61111111111111, 114.4, 101.57894736842105, 99.65]
-
-plot.print_chart("number of edges", "Running Time(s)",
-                         "Running time with respect to number of edges", x1, y1, x2,
-                         y2,"charts/time.png")
-
-plot.print_chart("number of edges", "Maximum length",
-                 "Maximum length with respect to number of edges", x3, y3, x4, y4, "charts/max.png")
-
-"""

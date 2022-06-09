@@ -84,7 +84,7 @@ class Ui_label_initial_vertex(object):
         label_initial_vertex.setObjectName("label_initial_vertex")
         label_initial_vertex.resize(1370, 730)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../gui/logo.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("logo.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         label_initial_vertex.setWindowIcon(icon)
         label_initial_vertex.setIconSize(QtCore.QSize(30, 30))
         self.centralwidget = QtWidgets.QWidget(label_initial_vertex)

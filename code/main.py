@@ -536,14 +536,3 @@ class MyAlgorithm:
         return cycles
 
 
-"""
-graph = MyGraph()
-graph.generate_random_graph(5, 10, 0)
-graph.print_graph(4)
-"""
-# alg = MyAlgorithm()
-# alg.generate_graph(0,6,10,4,16)
-# alg.my_algorithm(4)
-# alg.simple_algo()
-
-# print(alg.check_include([4, 3, 1, 0], [3, 4]))

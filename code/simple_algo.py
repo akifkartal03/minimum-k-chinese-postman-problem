@@ -1,10 +1,9 @@
 # I didn't want to bother with global variables therefore,
-# I created a class to encapsulate my simple algorithm.
+# I created a class to encapsulate my simple exhausted search algorithm.
 class MySimpleAlgorithm:
 
     def __init__(self, edges, init_vertex, k_value, node, cyc):
         self.graph = [list(elem) for elem in edges]
-        # self.graph = [[0, 1], [0, 2], [0, 3], [0, 4], [1, 4], [1, 5], [2, 3], [2, 5], [4, 5]]
         self.cycles = cyc
         self.found = []
         self.initial_vertex = init_vertex
@@ -168,25 +167,3 @@ class MySimpleAlgorithm:
             # `j+1` with one less element `k-1`
             self.findCombinations(A, k - 1, out + (A[j],), j + 1)
 
-
-"""
-arr = [1, 2, 3, 4, 5]
-r = 3
-n = len(arr)
-printCombination(arr, n, r)
-
-
-def main2():
-    global graph
-    global cycles
-    global initial_vertex
-    global k
-    global found
-    k = 3
-    graph = [[0,1],[0,2],[0,3],[0,4],[1,4],[1,5],[2,3],[2,5],[4,5]]
-    data = [[0, 4, 1,0], [0, 2, 5, 4, 1,0], [0, 3, 2, 5, 4, 1,0]]
-    findMatch(data)
-"""
-# main(0,0,3)
-# algo = MySimpleAlgorithm([[0, 2], [0, 4], [1, 2], [1, 3], [2, 3], [2, 4]],0,3,5)
-# print(algo.main())
