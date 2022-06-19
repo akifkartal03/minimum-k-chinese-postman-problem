@@ -14,7 +14,7 @@
 - You can check Final Presentation and Final Report pdf file to get more information.
 
 ### Demo Video
-- You can see the mobile application in this [video](https://youtu.be/bzs2MP1MxOg).
+- You can see the details of this project in this [video](https://youtu.be/bzs2MP1MxOg).
 
 ### Tools and Technologies
 
