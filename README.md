@@ -3,7 +3,7 @@
 ## Minimum k-Chinese Postman Problem
 
 <p align="center">
-  <img width="700" height="250 src="https://i.ibb.co/w7wBvCM/chinesee.png">
+  <img width="700" height="250" src="https://i.ibb.co/w7wBvCM/chinesee.png">
 </p>
 
 ### Problem Definition
