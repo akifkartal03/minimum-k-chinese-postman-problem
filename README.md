@@ -1,4 +1,4 @@
-# CSE496 Graduation Project-2
+# CSE496 Graduation Project - 2
 
 ## Minimum k-Chinese Postman Problem
 
